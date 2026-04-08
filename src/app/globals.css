@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  /* Clean Slate Palette */
+  --background: #f8fafc; 
+  --foreground: #0f172a; 
+  --surface: #ffffff;
+
+  /* Brand Colors */
+  --primary-blue: #1e6fa8;
+  --primary-blue-dark: #124a73;
+  --primary-green: #15803d;
+  
+  /* Shared Accent */
+  --accent-blue: #eff6ff;
+}
+
+@theme {
+  /* Mapping variables to Tailwind for v4 compatibility */
+  --color-primary-blue: var(--primary-blue);
+  --color-primary-blue-dark: var(--primary-blue-dark);
+  --color-primary-green: var(--primary-green);
+}
+
+/* ... keep your existing reset/scrollbar code ... */
