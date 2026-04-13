@@ -19,10 +19,10 @@ export default function Navbar() {
       label: "What We Do", 
       href: "/programs",
       children: [
-        { title: "Food Security", desc: "Sustainable agriculture and emergency relief.", href: "/programs/food-security" },
+        { title: "Food Security & Livelihoods", desc: "Sustainable agriculture & relief.", href: "/programs/food-security" },
         { title: "Education", desc: "Empowering the next generation.", href: "/programs/education" },
-        { title: "Health & WASH", desc: "Clean water and medical assistance.", href: "/programs/health" },
-        { title: "Peace Building", desc: "Fostering community resilience.", href: "/programs/peace" },
+        { title: "Health Services", desc: "Clean water & medical assistance.", href: "/programs/health" },
+        { title: "Protection", desc: "Fostering community resilience.", href: "/programs/peace" },
       ]
     },
     { label: "Projects", href: "/projects" },
@@ -37,32 +37,40 @@ export default function Navbar() {
 
   return (
     <header 
-      className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-        isScrolled ? "bg-white/95 backdrop-blur-md py-3 shadow-xl" : "bg-[#0a2647] py-5"
+      className={`fixed top-0 w-full z-[100] transition-all duration-500 border-b ${
+        isScrolled 
+          ? "bg-white/90 backdrop-blur-xl py-3 shadow-sm border-slate-200/50" 
+          : "bg-transparent py-6 border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* LOGO SECTION */}
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-3 group z-50">
           <motion.div 
-            animate={{ scale: isScrolled ? 0.9 : 1 }}
-            className="relative h-12 w-12 rounded-lg bg-white p-1 shadow-inner"
+            animate={{ scale: isScrolled ? 0.95 : 1 }}
+            className="relative h-12 w-12 rounded-xl bg-white p-1 shadow-sm overflow-hidden border border-slate-100"
           >
-            <Image src="/CCDA-logo.jpeg" alt="Logo" fill className="object-contain" />
+            <Image 
+              src="/CCDA-logo.jpeg" 
+              alt="CCDA Logo" 
+              fill 
+              sizes="48px"
+              className="object-contain" 
+            />
           </motion.div>
           <div className="flex flex-col">
-            <span className={`font-black text-xl leading-none tracking-tighter ${isScrolled ? 'text-[#0a2647]' : 'text-white'}`}>
+            <span className={`font-serif text-xl font-bold leading-none tracking-tight transition-colors ${isScrolled ? 'text-[#0f62a3]' : 'text-white'}`}>
               CCDA
             </span>
-            <span className={`text-[9px] font-bold uppercase tracking-[0.3em] ${isScrolled ? 'text-primary-green' : 'text-primary-green/90'}`}>
+            <span className={`text-[9px] font-bold uppercase tracking-[0.3em] transition-colors ${isScrolled ? 'text-[#1e8b35]' : 'text-[#1e8b35]/90'}`}>
               South Sudan
-                      </span>
+            </span>
           </div>
         </Link>
 
         {/* DESKTOP NAV */}
-        <nav className="hidden lg:flex items-center gap-2">
+        <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => (
             <div 
               key={item.label}
@@ -72,31 +80,35 @@ export default function Navbar() {
             >
               <Link
                 href={item.href}
-                className={`flex items-center gap-1 px-4 py-2 text-xs font-black uppercase tracking-widest transition-colors rounded-full
-                  ${isScrolled ? 'text-slate-600 hover:bg-slate-100' : 'text-white/80 hover:text-white hover:bg-white/10'}
+                className={`flex items-center gap-1 px-5 py-2.5 text-xs font-semibold uppercase tracking-widest transition-all rounded-full
+                  ${isScrolled 
+                    ? 'text-slate-600 hover:text-[#0f62a3] hover:bg-[#0f62a3]/5' 
+                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                  }
                 `}
               >
                 {item.label}
-                {item.children && <ChevronDown size={14} className={`transition-transform ${activeDropdown === item.label ? 'rotate-180' : ''}`} />}
+                {item.children && <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />}
               </Link>
 
               {/* DROPDOWN MENU */}
               <AnimatePresence>
                 {item.children && activeDropdown === item.label && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden p-4"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-xl shadow-[#0f62a3]/10 border border-slate-100 overflow-hidden p-3"
                   >
-                    <div className="grid gap-2">
+                    <div className="grid gap-1">
                       {item.children.map((child) => (
                         <Link key={child.title} href={child.href} className="group/item flex flex-col p-3 hover:bg-slate-50 rounded-xl transition-colors">
-                          <span className="text-sm font-black text-[#0a2647] flex items-center gap-2">
+                          <span className="text-sm font-bold text-[#0f62a3] flex items-center gap-2">
                             {child.title}
-                            <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all" />
+                            <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-[#1e8b35]" />
                           </span>
-                          <span className="text-xs text-slate-500 font-medium">{child.desc}</span>
+                          <span className="text-xs text-slate-500 font-medium mt-0.5">{child.desc}</span>
                         </Link>
                       ))}
                     </div>
@@ -106,21 +118,22 @@ export default function Navbar() {
             </div>
           ))}
 
-          <div className="h-6 w-[1px] bg-slate-300/30 mx-4" />
+          <div className={`h-6 w-[1px] mx-4 transition-colors ${isScrolled ? 'bg-slate-200' : 'bg-white/20'}`} />
 
           <Link
             href="/donate"
-            className="bg-primary-green hover:bg-green-600 text-white px-6 py-3 rounded-full font-black text-[10px] uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-green-500/20 transition-transform active:scale-95"
+            className="bg-[#1e8b35] hover:bg-[#166e2a] text-white px-7 py-3 rounded-full font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[#1e8b35]/20 transition-all hover:-translate-y-0.5 active:translate-y-0"
           >
             <Heart size={14} fill="currentColor" />
-            Support Our Mission
+            Support Mission
           </Link>
         </nav>
 
         {/* MOBILE TOGGLE */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className={`lg:hidden p-2 rounded-lg ${isScrolled ? 'text-[#0a2647]' : 'text-white'}`}
+          className={`lg:hidden p-2 rounded-lg z-50 transition-colors ${isScrolled || isMobileMenuOpen ? 'text-[#0f62a3]' : 'text-white'}`}
+          aria-label="Toggle Menu"
         >
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -130,19 +143,16 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div 
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-0 right-0 w-full h-screen bg-[#0a2647] z-[150] p-8 flex flex-col"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="absolute top-full left-0 w-full h-[calc(100vh-80px)] bg-white shadow-2xl border-t border-slate-100 lg:hidden overflow-y-auto"
           >
-            <div className="flex justify-end mb-12">
-              <button onClick={() => setIsMobileMenuOpen(false)} className="text-white"><X size={32} /></button>
-            </div>
-            <div className="space-y-6">
+            <div className="flex flex-col p-6 space-y-6">
               {navItems.map((item, i) => (
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                   key={item.label}
@@ -150,15 +160,28 @@ export default function Navbar() {
                   <Link 
                     href={item.href} 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-3xl font-black text-white uppercase tracking-tighter hover:text-primary-green"
+                    className="text-2xl font-serif font-bold text-[#0f62a3] hover:text-[#1e8b35] transition-colors block"
                   >
                     {item.label}
                   </Link>
+                  {/* Render mobile sub-items if needed here */}
                 </motion.div>
               ))}
-              <Link href="/contact" className="block w-full bg-primary-green text-white text-center py-5 rounded-2xl font-black uppercase tracking-widest">
-                Partner With Us
-              </Link>
+              
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ delay: 0.4 }}
+                className="pt-8 border-t border-slate-100"
+              >
+                <Link 
+                  href="/donate" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 bg-[#1e8b35] text-white py-4 rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#1e8b35]/20"
+                >
+                  <Heart size={16} fill="currentColor" /> Support Our Mission
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

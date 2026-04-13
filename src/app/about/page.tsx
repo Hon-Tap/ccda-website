@@ -13,7 +13,8 @@ import {
   Target,
   ArrowRight,
   Heart,
-  ChevronDown
+  ChevronDown,
+  Building2
 } from "lucide-react";
 
 /* =========================================================
@@ -46,12 +47,11 @@ export default function AboutPage() {
     offset: ["start start", "end end"]
   });
 
-  // Subtle parallax for background elements
-  const yParallax = useTransform(scrollYProgress, [0, 1], [0, 300]);
-
   return (
-    <main ref={containerRef} className="bg-[#fcfdfd] text-[#0a2647] font-sans overflow-x-hidden">
-      
+    <main
+  ref={containerRef}
+  className="relative bg-[#fcfdfd] text-[#0a2647] font-sans overflow-x-hidden">
+    
       {/* --- 1. CINEMATIC HERO --- */}
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-[#051324]">
         <motion.div 
@@ -63,6 +63,7 @@ export default function AboutPage() {
             alt="CCDA Vision"
             fill
             priority
+            sizes="100vw"
             className="object-cover brightness-[0.4]"
           />
         </motion.div>
@@ -88,7 +89,6 @@ export default function AboutPage() {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-0 right-0 z-30 flex justify-center">
           <motion.div 
             animate={{ y: [0, 8, 0] }} 
@@ -100,7 +100,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* --- 2. ORGANIZATIONAL DNA (Asymmetric Layout) --- */}
+      {/* --- 2. ORGANIZATIONAL DNA --- */}
       <section className="py-32 lg:py-40 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           <motion.div 
@@ -115,15 +115,8 @@ export default function AboutPage() {
             </motion.div>
             
             <motion.div variants={revealVariants} className="space-y-6 text-slate-600 font-light leading-relaxed text-lg">
-              <p>
-                Established on Christian principles of compassion and service, CCDA operates 
-                under the <strong>South Sudan NGOs Act 2016</strong>. We recognize that true impact requires moving beyond temporary aid.
-              </p>
-              <p>
-                Our work is grounded in the belief that humanitarian response must empower 
-                local communities. We don&apos;t just provide resources; we build the systemic capacity that 
-                allows families to rebuild their lives with hope and self-reliance.
-              </p>
+              <p>Established on Christian principles of compassion and service, CCDA operates under the <strong>South Sudan NGOs Act 2016</strong>. We recognize that true impact requires moving beyond temporary aid.</p>
+              <p>Our work is grounded in the belief that humanitarian response must empower local communities. We build the systemic capacity that allows families to rebuild their lives with hope and self-reliance.</p>
             </motion.div>
           </motion.div>
           
@@ -132,9 +125,6 @@ export default function AboutPage() {
             className="lg:col-span-5 flex flex-col gap-6"
           >
             <div className="bg-[#0a2647] p-10 rounded-sm text-white relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform duration-700">
-                <Target size={120} />
-              </div>
               <Target className="text-primary-green w-8 h-8 mb-6 relative z-10" />
               <h3 className="font-serif text-2xl mb-3 relative z-10">Our Vision</h3>
               <p className="text-white/70 text-sm leading-relaxed font-light relative z-10">
@@ -158,7 +148,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="text-center max-w-2xl mx-auto mb-20 space-y-6">
             <h4 className="text-primary-green font-bold uppercase tracking-[0.25em] text-xs">Guiding Principles</h4>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0a2647] tracking-tight">The DNA of our field operations</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0a2647] tracking-tight">The Foundation of Our Field Operations</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#0a2647]/10">
@@ -183,30 +173,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* --- 4. LEADERSHIP & GOVERNANCE --- */}
-      <section className="py-32 max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="flex flex-col lg:flex-row gap-16 items-start">
-          <div className="lg:w-1/3 sticky top-32 space-y-6">
-            <h4 className="text-primary-green font-bold uppercase tracking-[0.25em] text-xs">Oversight</h4>
-            <h2 className="text-4xl font-serif text-[#0a2647] tracking-tight leading-tight">
-              Leadership & <br />Governance
-            </h2>
-            <p className="text-slate-500 font-light leading-relaxed">
-              Led by a dedicated Board of Directors and an Executive Team committed to transparency, compliance, and Christian integrity.
-            </p>
-          </div>
-
-          <div className="lg:w-2/3 grid sm:grid-cols-2 gap-6">
-            {[
-              { title: "Board of Directors", desc: "The supreme policy-making body responsible for strategic oversight, financial accountability, and legal compliance." },
-              { title: "Executive Director", desc: "Responsible for daily operations, resource mobilization, and executing the strategic vision of the organization." },
-              { title: "Program Management", desc: "Expert technical teams overseeing field interventions in Health, WASH, and Protection sectors." },
-              { title: "Field Operations", desc: "Dedicated staff working directly within vulnerable communities to ensure effective aid delivery." }
-            ].map((role, i) => (
-              <div key={i} className="p-8 border border-slate-200 hover:border-primary-green rounded-sm transition-colors group">
-                <Users className="w-6 h-6 text-[#0a2647]/40 group-hover:text-primary-green mb-6 transition-colors" />
-                <h4 className="text-lg font-serif font-bold text-[#0a2647] mb-3">{role.title}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed font-light">{role.desc}</p>
+      {/* --- 4. PARTNERS & DONORS --- */}
+      <section className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+          <h4 className="text-primary-green font-bold uppercase tracking-[0.25em] text-xs mb-8">Trusted by</h4>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#0a2647] mb-20 tracking-tight">Strategic Partners & Donors</h2>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 items-center opacity-60">
+            {/* Placeholder for donor logos */}
+            {[1, 2, 3, 4].map((item) => (
+              <div key={item} className="flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-500">
+                <Building2 size={64} className="text-[#0a2647]" />
+                <span className="ml-4 font-serif text-xl font-bold">Partner {item}</span>
               </div>
             ))}
           </div>
@@ -227,26 +205,11 @@ export default function AboutPage() {
                 conflict-affected states, ensuring that aid reaches those in the most 
                 vulnerable and hard-to-reach areas.
               </p>
-              
-              <div className="pt-8 border-t border-white/10 flex items-start gap-5">
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                  <MapPin className="text-primary-green w-5 h-5" />
-                </div>
-                <div>
-                  <p className="font-serif text-xl text-white mb-1">National Headquarters</p>
-                  <p className="text-white/50 text-sm font-light">Thongpiny Residential Area, Block 3, Plot 631 <br /> Juba, South Sudan</p>
-                </div>
-              </div>
             </div>
             
             <div className="relative aspect-[4/3] overflow-hidden rounded-sm border border-white/10 shadow-2xl">
-              <Image src="/img (1).jpeg" alt="Field Location" fill className="object-cover opacity-80" />
+              <Image src="/img (1).jpeg" alt="Field Location" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-80" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a2647]/80 to-transparent" />
-              <div className="absolute bottom-8 left-8">
-                <span className="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                  Operational Reach: Nationwide
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -254,14 +217,7 @@ export default function AboutPage() {
 
       {/* --- FINAL CTA --- */}
       <section className="py-40 bg-white relative">
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none overflow-hidden flex items-center justify-center">
-          <span className="text-[20vw] font-black uppercase text-[#0a2647]">IMPACT</span>
-        </div>
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-          className="max-w-4xl mx-auto text-center px-6 relative z-10"
-        >
+        <div className="max-w-4xl mx-auto text-center px-6 relative z-10">
           <h2 className="text-4xl md:text-6xl font-serif text-[#0a2647] mb-8 tracking-tight">Partnering for Impact</h2>
           <p className="text-slate-500 mb-12 text-lg font-light max-w-2xl mx-auto">
             We collaborate with international donors, local authorities, and fellow 
@@ -271,35 +227,16 @@ export default function AboutPage() {
             <Link href="/contact" className="px-10 py-5 bg-[#0a2647] text-white font-bold text-xs tracking-[0.2em] uppercase hover:bg-primary-green transition-colors rounded-sm flex items-center gap-3">
               Partner with CCDA <ArrowRight size={16} />
             </Link>
-            <Link href="/programs" className="px-10 py-5 bg-transparent border border-[#0a2647]/20 text-[#0a2647] font-bold text-xs tracking-[0.2em] uppercase hover:bg-[#eaeff5] transition-colors rounded-sm">
-              View Our Programs
-            </Link>
           </div>
-        </motion.div>
+        </div>
       </section>
     </main>
   );
 }
 
 const values = [
-  { 
-    label: "Accountability", 
-    icon: ShieldCheck,
-    text: "Maintaining the highest standards of transparency in resource management." 
-  },
-  { 
-    label: "Integrity", 
-    icon: Scale,
-    text: "Conducting all operations with complete honesty and Christian ethical principles." 
-  },
-  { 
-    label: "Impartiality", 
-    icon: Users,
-    text: "Providing assistance based solely on need, regardless of race, gender, or religion." 
-  },
-  { 
-    label: "Humanity", 
-    icon: Heart,
-    text: "Upholding the intrinsic value, rights, and dignity of every human life." 
-  }
+  { label: "Accountability", icon: ShieldCheck, text: "Maintaining the highest standards of transparency in resource management." },
+  { label: "Integrity", icon: Scale, text: "Conducting all operations with complete honesty and Christian ethical principles." },
+  { label: "Impartiality", icon: Users, text: "Providing assistance based solely on need, regardless of race, gender, or religion." },
+  { label: "Humanity", icon: Heart, text: "Upholding the intrinsic value, rights, and dignity of every human life." }
 ];

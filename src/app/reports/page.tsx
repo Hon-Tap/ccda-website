@@ -1,135 +1,129 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FileText, Download, Search, Filter, ExternalLink, Calendar } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FileText, Search, ChevronRight, ArrowUpRight, FolderOpen } from "lucide-react";
 
-const reports = [
-  {
-    id: 1,
-    title: "Annual Impact Report 2025",
-    category: "Annual",
-    date: "March 2026",
-    size: "4.2 MB",
-    description: "A comprehensive overview of our milestones in Food Security and WASH across South Sudan.",
-  },
-  {
-    id: 2,
-    title: "Quarterly Financial Audit - Q4",
-    category: "Financial",
-    date: "Jan 2026",
-    size: "1.8 MB",
-    description: "Detailed transparency report on resource allocation and donor fund management.",
-  },
-  {
-    id: 3,
-    title: "Education Initiative Assessment",
-    category: "Program",
-    date: "Nov 2025",
-    size: "2.5 MB",
-    description: "Evaluating the success of our school-rebuilding projects in Jonglei State.",
-  },
-  // Add more report objects here
-];
-
+// Replace this with your actual database call or fetch logic
 export default function ReportsPage() {
+  const [reports, setReports] = useState([]); // Database state
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeCat, setActiveCat] = useState("All");
+
+  // Mock effect: In your actual app, this is where you fetch from your DB
+  useEffect(() => {
+    // Simulate DB fetch
+    const fetchReports = async () => {
+      // const data = await fetch('/api/reports');
+      setReports([]); // Change to [] to test the Empty State design
+      setLoading(false);
+    };
+    fetchReports();
+  }, []);
+
+  const categories = ["All", "Annual", "Financial", "Program"];
+
+  const filteredReports = useMemo(() => {
+    return reports.filter((r: any) => 
+      (activeCat === "All" || r.category === activeCat) &&
+      r.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, activeCat, reports]);
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]">
-      {/* Hero Header */}
-      <section className="pt-32 pb-20 bg-[#0a2647] text-white px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <h1 className="text-4xl md:text-6xl font-serif mb-6">Transparency & Accountability</h1>
-            <p className="text-blue-100 max-w-2xl text-lg font-light">
-              Access our latest program evaluations, financial statements, and annual reports as we work towards a resilient South Sudan.
-            </p>
-          </motion.div>
+    <main className="bg-[#fcfdfd] text-[#0a2647] min-h-screen">
+      
+      {/* Header */}
+      <section className="pt-32 pb-20 px-6 border-b border-slate-200">
+        <div className="max-w-6xl mx-auto">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-7xl md:text-8xl font-serif tracking-tighter mb-8">
+            Archives.
+          </motion.h1>
+          <p className="text-xl md:text-2xl text-slate-500 font-serif italic max-w-xl">
+            "Accountability is the foundation of the trust we build with the communities we serve."
+          </p>
         </div>
       </section>
 
-      {/* Filter & Search Bar */}
-      <section className="py-8 px-6 -mt-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white p-4 rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1 w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-              <input 
-                type="text" 
-                placeholder="Search reports by title or year..."
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-transparent focus:bg-white focus:border-primary-green outline-none transition-all"
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <button className="flex items-center gap-2 px-6 py-3 bg-slate-100 text-[#0a2647] font-semibold rounded-xl hover:bg-slate-200 transition-colors w-full md:w-auto">
-              <Filter size={18} />
-              All Categories
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Reports Grid */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {reports
-              .filter(r => r.title.toLowerCase().includes(searchTerm.toLowerCase()))
-              .map((report, index) => (
-              <motion.div
-                key={report.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="group bg-white p-8 rounded-3xl border border-slate-100 hover:border-primary-green hover:shadow-2xl hover:shadow-green-100 transition-all duration-500 flex flex-col h-full"
+      {/* Controls */}
+      <section className="sticky top-0 z-10 bg-[#fcfdfd]/80 backdrop-blur-md py-8 px-6 border-b border-slate-200">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex gap-2">
+            {categories.map(cat => (
+              <button 
+                key={cat} 
+                onClick={() => setActiveCat(cat)}
+                className={`px-6 py-2 text-xs font-bold uppercase tracking-[0.2em] transition-all ${activeCat === cat ? "bg-[#0a2647] text-white" : "text-slate-400 hover:text-[#0a2647]"}`}
               >
-                <div className="mb-6 flex justify-between items-start">
-                  <div className="p-4 bg-green-50 text-primary-green rounded-2xl group-hover:bg-primary-green group-hover:text-white transition-colors">
-                    <FileText size={28} />
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full text-slate-500">
-                    {report.category}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-serif text-[#0a2647] mb-3 group-hover:text-primary-green transition-colors">
-                  {report.title}
-                </h3>
-                <p className="text-slate-500 text-sm font-light mb-8 flex-grow">
-                  {report.description}
-                </p>
-
-                <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-xs text-slate-400 flex items-center gap-1">
-                      <Calendar size={12} /> {report.date}
-                    </span>
-                    <span className="text-xs font-semibold text-slate-500 mt-1">{report.size} • PDF</span>
-                  </div>
-                  <button className="flex items-center gap-2 text-primary-green font-bold text-sm hover:underline">
-                    <Download size={16} />
-                    Download
-                  </button>
-                </div>
-              </motion.div>
+                {cat}
+              </button>
             ))}
           </div>
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-4 top-3 text-slate-400" size={16} />
+            <input 
+              placeholder="Filter archives..."
+              className="w-full py-3 pl-12 pr-4 bg-transparent border-b border-slate-300 focus:border-[#0a2647] outline-none transition-all placeholder:text-slate-300"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
       </section>
 
-      {/* Institutional Note */}
-      <section className="pb-20 px-6 text-center">
-        <div className="max-w-3xl mx-auto p-10 rounded-3xl bg-primary-green/5 border border-primary-green/10">
-          <h4 className="text-[#0a2647] font-serif text-xl mb-4">Request Specific Data</h4>
-          <p className="text-slate-600 text-sm mb-6">
-            Looking for historical data or specific project audits not listed here? Our communications team can assist you with detailed documentation.
-          </p>
-          <button className="text-primary-green font-bold flex items-center gap-2 mx-auto hover:gap-4 transition-all">
-            Contact Secretary General <ExternalLink size={16} />
+      {/* Grid / Content */}
+      <section className="py-24 px-6 min-h-[400px]">
+        <div className="max-w-6xl mx-auto">
+          {loading ? (
+            <div className="text-slate-400 text-center py-20 animate-pulse">Loading archives...</div>
+          ) : filteredReports.length === 0 ? (
+            /* Empty State Design */
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="flex flex-col items-center justify-center py-20 text-center space-y-6"
+            >
+              <div className="p-8 bg-slate-50 rounded-full">
+                <FolderOpen size={48} className="text-slate-300" />
+              </div>
+              <h3 className="text-2xl font-serif">No reports found</h3>
+              <p className="text-slate-500 max-w-sm">We currently don't have any documents matching your criteria. Please check back later or contact the office.</p>
+            </motion.div>
+          ) : (
+            <AnimatePresence>
+              {filteredReports.map((report: any) => (
+                <motion.div 
+                  key={report.id}
+                  layout
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="group grid md:grid-cols-12 gap-8 py-12 border-b border-slate-200 items-center hover:bg-slate-50 transition-colors px-4 -mx-4"
+                >
+                  <div className="md:col-span-1"><FileText className="text-slate-300 group-hover:text-primary-green transition-colors" size={32} /></div>
+                  <div className="md:col-span-5 space-y-2">
+                    <h3 className="text-2xl font-serif">{report.title}</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed">{report.description}</p>
+                  </div>
+                  <div className="md:col-span-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                    {report.category} • {report.date}
+                  </div>
+                  <div className="md:col-span-3 flex justify-end">
+                    <button className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] hover:text-primary-green transition-all">
+                      Download {report.size} <ArrowUpRight size={14} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
+        </div>
+      </section>
+      
+      {/* Footer CTA */}
+      <section className="py-24 bg-[#0a2647] text-white px-6">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h2 className="text-4xl font-serif">Need specialized documentation?</h2>
+          <p className="text-blue-100 font-light">If you require historical audits or raw data not present in our public archives, please reach out directly.</p>
+          <button className="inline-flex items-center gap-3 bg-primary-green px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-[#0a2647] transition-all">
+            Request Access <ChevronRight size={16} />
           </button>
         </div>
       </section>
