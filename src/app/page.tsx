@@ -42,83 +42,93 @@ export default function HomePage() {
     <main className="bg-white overflow-x-hidden font-sans text-slate-800">
       
       {/* 1. DYNAMIC HERO SECTION WITH STATIC TEXT */}
-      <section className="relative h-[100dvh] min-h-[700px] flex items-center justify-center overflow-hidden bg-[#0b132b]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            initial={{ scale: 1.05, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-0 z-0"
-          >
-            <Image
-              src={heroImages[currentSlide]}
-              alt="CCDA South Sudan Field Work"
-              fill
-              priority
-              className="object-cover"
-            />
-          </motion.div>
-        </AnimatePresence>
+     <section className="relative h-[100dvh] min-h-[700px] flex items-center justify-center overflow-hidden bg-[#0b132b]">
+  {/* Dynamic Background Images */}
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={currentSlide}
+      initial={{ scale: 1.05, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
+      className="absolute inset-0 z-0"
+    >
+      <Image
+        src={heroImages[currentSlide]}
+        alt="CCDA South Sudan Field Work"
+        fill
+        priority
+        className="object-cover"
+      />
+    </motion.div>
+  </AnimatePresence>
 
-        {/* Deep gradient matching the premium dark theme of the header/footer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0b132b]/90 via-[#0b132b]/60 to-[#0b132b]/95 z-10" />
+  {/* Deep gradient matching the premium dark theme */}
+  <div className="absolute inset-0 bg-gradient-to-b from-[#0b132b]/95 via-[#0b132b]/40 to-[#0b132b]/95 z-10" />
 
-        <div className="relative z-20 max-w-5xl mx-auto px-6 w-full text-center mt-16 md:mt-24">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="space-y-8"
-          >
-            {/* Organization Name Badge */}
-            <motion.div variants={fadeUp} className="inline-block">
-              <span className="px-6 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white/90 text-xs font-bold uppercase tracking-[0.25em] shadow-2xl">
-                Christian Community Development Agency
-              </span>
-            </motion.div>
-            
-            {/* Static Slogan */}
-            <motion.h1 variants={fadeUp} className="text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] tracking-tight drop-shadow-2xl max-w-4xl mx-auto">
-              We Alleviate the Suffering of <br className="hidden md:block" />
-              <span className="text-[#1e8b35] italic font-medium">Under-privileged Populations.</span>
-            </motion.h1>
+  <div className="relative z-20 max-w-6xl mx-auto px-6 w-full text-center mt-12 md:mt-20">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
+      className="flex flex-col items-center space-y-10"
+    >
+      {/* Organization Name Badge */}
+      <motion.div variants={fadeUp} className="inline-block">
+        <span className="px-6 py-2.5 rounded-full border border-white/10 bg-white/10 backdrop-blur-md text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] shadow-2xl">
+          Christian Community Development Agency
+        </span>
+      </motion.div>
+      
+      {/* Rewritten Slogan with Glassmorphic Badge Styling */}
+      <motion.div 
+        variants={fadeUp}
+        className="relative p-10 md:p-16 rounded-[3rem] md:rounded-[4rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl max-w-5xl mx-auto overflow-hidden"
+      >
+        {/* Subtle inner light effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+        
+        <h1 className="relative z-10 text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.15] tracking-tight drop-shadow-2xl">
+          We Alleviate the Suffering of <br className="hidden md:block" />
+          <span className="text-[#1e8b35] italic font-medium">Under-privileged Populations.</span>
+        </h1>
+      </motion.div>
 
-            <motion.p variants={fadeUp} className="text-slate-300 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
-              Restoring dignity, building resilience, and creating sustainable futures across South Sudan through faith-driven excellence.
-            </motion.p>
+      {/* Mission Description */}
+      <motion.p variants={fadeUp} className="text-slate-300 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+        Restoring dignity, building resilience, and creating sustainable futures across South Sudan through faith-driven excellence.
+      </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Link
-                href="/programs"
-                className="group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-[#1e8b35] text-white font-bold rounded-full transition-all shadow-lg shadow-[#1e8b35]/20 hover:shadow-[#1e8b35]/40 hover:-translate-y-0.5 uppercase tracking-widest text-xs flex items-center justify-center"
-              >
-                <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out" />
-                <span className="relative z-10 flex items-center gap-3">
-                  Explore Our Impact <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Link>
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto px-8 py-4 bg-transparent hover:bg-white/5 border border-white/20 text-white font-bold rounded-full transition-all uppercase tracking-widest text-xs text-center backdrop-blur-sm"
-              >
-                Partner With Us
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Bouncing Scroll Indicator */}
-        <motion.div 
-          animate={{ y: [0, 10, 0] }} 
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 text-white/50"
+      {/* Premium CTA Buttons */}
+      <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
+        <Link
+          href="/programs"
+          className="group relative overflow-hidden w-full sm:w-auto px-10 py-5 bg-[#1e8b35] text-white font-bold rounded-full transition-all shadow-xl shadow-[#1e8b35]/20 hover:shadow-[#1e8b35]/40 hover:-translate-y-1 uppercase tracking-widest text-[11px] flex items-center justify-center"
         >
-          <ChevronDown size={32} strokeWidth={1.5} />
-        </motion.div>
-      </section>
+          <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out" />
+          <span className="relative z-10 flex items-center gap-3">
+            Explore Our Impact <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </span>
+        </Link>
+        <Link
+          href="/contact"
+          className="w-full sm:w-auto px-10 py-5 bg-transparent hover:bg-white/10 border border-white/20 text-white font-bold rounded-full transition-all uppercase tracking-widest text-[11px] text-center backdrop-blur-md hover:-translate-y-1"
+        >
+          Partner With Us
+        </Link>
+      </motion.div>
+    </motion.div>
+  </div>
+
+  {/* Refined Bouncing Scroll Indicator */}
+  <motion.div 
+    animate={{ y: [0, 15, 0] }} 
+    transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+    className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 text-white/30"
+  >
+    <ChevronDown size={40} strokeWidth={1} />
+  </motion.div>
+</section>
 
       {/* 2. MODERN MISSION SECTION */}
       <section className="py-24 lg:py-32 px-6 max-w-7xl mx-auto">
