@@ -83,12 +83,12 @@ export default function HomePage() {
       {/* Rewritten Slogan with Glassmorphic Badge Styling */}
       <motion.div 
         variants={fadeUp}
-        className="relative p-10 md:p-16 rounded-[3rem] md:rounded-[4rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl max-w-5xl mx-auto overflow-hidden"
+        className="relative p-7 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl max-w-2xl mx-auto overflow-hidden"
       >
         {/* Subtle inner light effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
         
-        <h1 className="relative z-10 text-4xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.15] tracking-tight drop-shadow-2xl">
+        <h1 className="relative z-10 text-2xl md:text-3xl lg:text-2xl font-serif text-white leading-[1.15] tracking-tight drop-shadow-2xl">
           We Alleviate the Suffering of <br className="hidden md:block" />
           <span className="text-[#1e8b35] italic font-medium">Under-privileged Populations.</span>
         </h1>
