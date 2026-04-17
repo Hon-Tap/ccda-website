@@ -1,146 +1,117 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { 
   Heart, Droplets, BookOpen, ShieldCheck, Home, Sprout, 
-  ArrowRight, Users, Scale, Globe, Layers, ArrowUpRight
+  ArrowUpRight, Layers, Workflow, Activity
 } from "lucide-react";
 
-/* =========================================================
-   ANIMATION CONSTANTS
-========================================================= */
 const revealVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } 
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-  }
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
 const programs = [
-  { id: "health", title: "Health Services", icon: Heart, stat: "15+ Facilities", desc: "Life-saving clinical interventions and mobile health services for underserved rural populations." },
-  { id: "wash", title: "WASH", icon: Droplets, stat: "50k+ Access", desc: "Sustainable water infrastructure and hygiene education to drive public health outcomes." },
-  { id: "education", title: "Education", icon: BookOpen, stat: "12 Schools", desc: "Empowering communities through inclusive learning and vocational development frameworks." },
-  { id: "protection", title: "Protection", icon: ShieldCheck, stat: "Crisis-Ready", desc: "Safeguarding human rights and providing trauma-informed care for vulnerable groups." },
-  { id: "shelter-nfi", title: "Shelter & NFIs", icon: Home, stat: "Emergency Aid", desc: "Rapid response kits and essential household items for displaced households." },
-  { id: "food-security", title: "Food Security", icon: Sprout, stat: "Agri-Resilience", desc: "Transitioning communities from aid dependency to sustainable agricultural production." }
+  { id: "health", title: "Clinical Health", icon: Heart, stat: "15+ Facilities", desc: "Life-saving clinical interventions, maternal care, and mobile health units for remote populations." },
+  { id: "wash", title: "WASH Engineering", icon: Droplets, stat: "50k+ Access", desc: "Hydraulic infrastructure and sustainable sanitation systems driving public health outcomes." },
+  { id: "education", title: "Education Systems", icon: BookOpen, stat: "12 Schools", desc: "Pedagogical frameworks, safe learning environments, and vocational capacity building." },
+  { id: "protection", title: "Human Protection", icon: ShieldCheck, stat: "Crisis-Ready", desc: "Trauma-informed case management and safeguarding rights for highly vulnerable demographics." },
+  { id: "shelter-nfi", title: "Shelter & NFIs", icon: Home, stat: "Emergency Aid", desc: "Rapid-deployment housing structures and essential domestic kits for displaced households." },
+  { id: "food-security", title: "Agronomic Resilience", icon: Sprout, stat: "Agri-Resilience", desc: "Transitioning communities from aid protocols to sovereign, climate-resilient food production." }
 ];
 
 export default function ProgramsPage() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-
   return (
-    <main ref={containerRef} className="bg-[#fcfdfd] text-[#0a2647] font-sans overflow-x-hidden">
+    <main className="bg-[#fcfcfc] text-[#0b132b] font-sans min-h-screen">
       
-      {/* --- 1. HERO --- */}
-      <section className="pt-48 pb-40 bg-[#0a2647] text-white relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Globe size={1000} className="absolute -top-40 -right-40 text-white/5 rotate-12" strokeWidth={0.5} />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-3xl">
-            <motion.span variants={revealVariants} className="inline-block px-5 py-2 rounded-full border border-primary-green/30 bg-primary-green/10 text-primary-green text-[11px] font-bold uppercase tracking-[0.3em] mb-10">
-              Technical Framework
-            </motion.span>
-            <motion.h1 variants={revealVariants} className="text-5xl md:text-8xl font-serif leading-[0.95] tracking-tighter mb-10">
-              Integrated <br /> <span className="italic text-white/70">Impact Systems.</span>
-            </motion.h1>
-            <motion.p variants={revealVariants} className="text-xl text-white/60 font-light leading-relaxed">
-              CCDA’s operational strategy is built on multi-sectoral integration. We don't treat symptoms; we build the systemic resilience required for sustainable peace and development in South Sudan.
-            </motion.p>
-          </motion.div>
-        </div>
+      {/* --- HERO: WHERE PROJECTS ARE BORN --- */}
+      <section className="pt-48 pb-32 px-6 max-w-7xl mx-auto">
+        <motion.div initial="hidden" animate="visible" variants={revealVariants} className="max-w-4xl">
+          <div className="flex items-center gap-4 mb-8">
+            <Activity className="text-[#1e8b35]" size={20} />
+            <span className="text-[#1e8b35] text-[10px] font-bold uppercase tracking-[0.3em]">
+              The Impact Incubator
+            </span>
+          </div>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[0.95] tracking-tight mb-8">
+            Where projects <br />
+            <span className="italic text-slate-400 font-light">are born.</span>
+          </h1>
+          <p className="text-xl text-slate-500 font-light leading-relaxed max-w-2xl">
+            This is the engine room of CCDA. We do not just execute programs; we architect scalable frameworks. Explore the six core sectors where our interventions are designed, tested, and deployed.
+          </p>
+        </motion.div>
       </section>
 
-      {/* --- 2. THE GRID --- */}
-      <section className="py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 border border-slate-200">
-            {programs.map((p, i) => (
-              <motion.div 
-                key={p.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white p-12 group hover:bg-[#0a2647] transition-all duration-500"
+      {/* --- THE FRAMEWORK GRID --- */}
+      <section className="pb-40 px-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {programs.map((p, i) => (
+            <motion.div 
+              key={p.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+            >
+              <Link 
+                href={`/programs/${p.id}`} 
+                className="group block h-full bg-white p-10 rounded-3xl border border-slate-200 hover:border-[#1e8b35] hover:shadow-2xl hover:shadow-[#1e8b35]/5 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-[380px]"
               >
-                <div className="flex justify-between items-start mb-8">
-                  <p.icon className="w-10 h-10 text-[#0a2647] group-hover:text-primary-green transition-colors" strokeWidth={1} />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 group-hover:text-white/50 transition-colors">
-                    {p.stat}
-                  </span>
+                {/* Hover Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1e8b35]/0 to-[#1e8b35]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-12">
+                    <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-[#1e8b35] transition-colors duration-500">
+                      <p.icon className="w-6 h-6 text-[#0b132b] group-hover:text-white transition-colors duration-500" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 bg-slate-50 px-3 py-1 rounded-full group-hover:text-[#1e8b35] group-hover:bg-[#1e8b35]/10 transition-colors">
+                      {p.stat}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-3xl font-serif text-[#0b132b] mb-4">
+                    {p.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed font-light">
+                    {p.desc}
+                  </p>
                 </div>
-                <h3 className="text-2xl font-serif text-[#0a2647] group-hover:text-white mb-4 transition-colors">
-                  {p.title}
-                </h3>
-                <p className="text-slate-500 group-hover:text-white/70 text-sm leading-relaxed mb-8 transition-colors">
-                  {p.desc}
-                </p>
-                <Link href={`/programs/${p.id}`} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#0a2647] group-hover:text-primary-green transition-colors">
-                  Learn Framework <ArrowUpRight size={14} />
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+
+                <div className="relative z-10 mt-8 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#0b132b] group-hover:text-[#1e8b35] transition-colors">
+                  View Framework <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* --- 3. MODUS OPERANDI --- */}
-      <section className="py-32 bg-[#eaeff5] overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-20 items-center">
+      {/* --- CROSS-CUTTING THEMES --- */}
+      <section className="py-32 bg-[#0b132b] text-white">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <h2 className="text-5xl font-serif leading-tight">The CCDA <br/> Methodology.</h2>
-            <p className="text-slate-600 leading-relaxed">
-              Every program is governed by a rigorous set of cross-cutting priorities. We align our field presence with international humanitarian standards, ensuring that our interventions are scalable, transparent, and—above all—human-centric.
+            <Workflow className="text-[#1e8b35] w-10 h-10" />
+            <h2 className="text-4xl md:text-5xl font-serif leading-tight">The Integration Matrix.</h2>
+            <p className="text-slate-400 font-light leading-relaxed text-lg">
+              No project is born in isolation. Every sector framework is rigorously vetted against our cross-cutting compliance themes to ensure sustainable, equitable, and zero-harm execution in the field.
             </p>
-            <div className="flex gap-4">
-              <div className="h-px w-20 bg-[#0a2647] my-auto" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em]">Standards & Compliance</span>
-            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4">
             {[
-              { title: "Gender Equality", icon: Users },
-              { title: "Conflict Sensitive", icon: Scale },
-              { title: "Disability Inclusion", icon: Layers },
-              { title: "Climate Resilience", icon: Globe }
+              { title: "Gender Integration", icon: Layers },
+              { title: "Conflict Sensitivity", icon: ShieldCheck },
+              { title: "Climate Resilience", icon: Sprout },
+              { title: "Data Accountability", icon: Activity }
             ].map((item, i) => (
-              <div key={i} className="bg-white p-8 border border-slate-200">
-                <item.icon className="w-6 h-6 text-[#0a2647] mb-6" />
-                <h4 className="font-bold text-sm uppercase tracking-[0.1em]">{item.title}</h4>
+              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-colors">
+                <item.icon className="w-6 h-6 text-[#1e8b35] mb-6" strokeWidth={1.5} />
+                <h4 className="font-bold text-xs uppercase tracking-[0.1em] text-white/90">{item.title}</h4>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- 4. CTA --- */}
-      <section className="py-40 bg-white">
-        <div className="max-w-3xl mx-auto text-center px-6">
-          <h2 className="text-4xl md:text-5xl font-serif mb-8">Ready to align your mission?</h2>
-          <p className="text-slate-500 mb-12">
-            Explore our technical frameworks and impact data to see how we are building the future of South Sudan.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/contact" className="px-10 py-5 bg-[#0a2647] text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-primary-green transition-colors">
-              Collaborate
-            </Link>
           </div>
         </div>
       </section>

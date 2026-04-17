@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, ArrowRight, Heart, Sprout, BookOpen, Stethoscope, Shield } from "lucide-react";
+import { ChevronDown, ArrowRight, Heart, Sprout, BookOpen, Stethoscope, Shield } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,6 +19,9 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "unset";
     }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isMobileMenuOpen]);
 
   const navItems = [
@@ -33,28 +36,31 @@ export default function Navbar() {
         { title: "Protection", desc: "Fostering community resilience", href: "/programs/peace", icon: Shield },
       ]
     },
-    { label: "Projects", href: "/projects" },
+    // { label: "Projects", href: "/projects" },
     { label: "Reports", href: "/reports" },
   ];
 
+  // Cinematic easing for the mobile menu
+  const sleekEase = [0.22, 1, 0.36, 1];
+
   return (
     <>
-      {/* HEADER CONTAINER
-        Width scaling: 85-75% on larger media, full width on medium/desktop.
-        Centered, static premium dark background, subtle bottom shadow.
-      */}
-      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-[95%] sm:w-[85%] md:w-full lg:w-full xl:w-[75%] z-[100] mt-2 md:mt-0 rounded-2xl md:rounded-none bg-[#0b132b] shadow-xl shadow-black/10 border border-white/5 md:border-t-0 md:border-x-0 border-b-white/10 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
+      {/* HEADER CONTAINER */}
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-[95%] sm:w-[85%] md:w-full lg:w-full xl:w-[75%] z-[100] mt-4 md:mt-0 md:pt-4 rounded-2xl md:rounded-none transition-all duration-300">
+        <div className="absolute inset-0 bg-[#0b132b]/90 backdrop-blur-md rounded-2xl md:rounded-none shadow-2xl shadow-black/20 border border-white/10 md:border-t-0 md:border-x-0 transition-all" />
+        
+        <div className="relative max-w-7xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
           
           {/* LOGO SECTION */}
           <Link href="/" className="flex items-center gap-3 group z-50">
-            <div className="relative h-12 w-12 rounded-xl bg-white p-1 shadow-sm overflow-hidden border border-slate-200 transition-transform duration-300 group-hover:scale-105">
-              <Image 
-                src="/CCDA-logo.jpeg" 
-                alt="CCDA Logo" 
-                fill 
-                sizes="48px"
-                className="object-contain" 
+            <div className="relative h-12 w-12 rounded-xl bg-white p-1 shadow-md overflow-hidden border border-slate-200 transition-all duration-500 group-hover:scale-105 group-hover:shadow-white/20 group-hover:shadow-lg"> 
+             <Image
+                src="/CCDA-logo.jpeg"
+                alt="CCDA Organization Logo"
+                width={48}
+                height={48}
+                priority
+                className="object-contain"
               />
             </div>
             <div className="flex flex-col">
@@ -78,28 +84,28 @@ export default function Navbar() {
               >
                 <Link
                   href={item.href}
-                  className="relative flex items-center gap-1.5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-slate-300 transition-colors hover:text-white rounded-lg hover:bg-white/5"
+                  className="relative flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-slate-300 transition-colors hover:text-white rounded-lg"
                 >
                   {item.label}
                   {item.children && (
                     <ChevronDown 
                       size={14} 
-                      className={`transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180 text-[#1e8b35]' : ''}`} 
+                      className={`transition-transform duration-500 ease-out ${activeDropdown === item.label ? 'rotate-180 text-[#1e8b35]' : ''}`} 
                     />
                   )}
-                  {/* Underline Slide Animation */}
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-[#1e8b35] transition-all duration-300 ease-out group-hover:w-[calc(100%-2rem)] rounded-full" />
+                  {/* Glowing Underline Slide Animation */}
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-gradient-to-r from-transparent via-[#1e8b35] to-transparent transition-all duration-500 ease-out group-hover:w-[calc(100%-1rem)]" />
                 </Link>
 
                 {/* DESKTOP DROPDOWN MENU */}
                 <AnimatePresence>
                   {item.children && activeDropdown === item.label && (
                     <motion.div
-                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2, type: "spring", stiffness: 300, damping: 24 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[340px] bg-white rounded-2xl shadow-2xl shadow-black/20 border border-slate-100 overflow-hidden p-2.5"
+                      initial={{ opacity: 0, y: 15, scale: 0.95, filter: "blur(4px)" }}
+                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(4px)" }}
+                      transition={{ duration: 0.3, ease: sleekEase }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[360px] bg-white rounded-2xl shadow-2xl shadow-black/40 border border-slate-100/50 overflow-hidden p-3"
                     >
                       <div className="grid gap-1">
                         {item.children.map((child) => {
@@ -108,17 +114,17 @@ export default function Navbar() {
                             <Link 
                               key={child.title} 
                               href={child.href} 
-                              className="group/item flex items-start gap-4 p-3 hover:bg-slate-50 rounded-xl transition-colors"
+                              className="group/item flex items-start gap-4 p-3 hover:bg-slate-50 rounded-xl transition-all duration-300"
                             >
-                              <div className="bg-[#0b132b]/5 p-2 rounded-lg text-[#0b132b] group-hover/item:bg-[#0b132b] group-hover/item:text-white transition-colors">
+                              <div className="bg-[#0b132b]/5 p-2.5 rounded-xl text-[#0b132b] group-hover/item:bg-[#1e8b35] group-hover/item:text-white group-hover/item:shadow-lg group-hover/item:shadow-[#1e8b35]/20 transition-all duration-300">
                                 <Icon size={18} strokeWidth={2.5} />
                               </div>
-                              <div className="flex flex-col flex-1">
-                                <span className="text-sm font-bold text-slate-900 flex items-center justify-between group-hover/item:text-[#0b132b] transition-colors">
+                              <div className="flex flex-col flex-1 mt-0.5">
+                                <span className="text-sm font-bold text-slate-900 flex items-center justify-between group-hover/item:text-[#1e8b35] transition-colors">
                                   {child.title}
-                                  <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all text-[#1e8b35]" />
+                                  <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
                                 </span>
-                                <span className="text-xs text-slate-500 font-medium mt-0.5">{child.desc}</span>
+                                <span className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{child.desc}</span>
                               </div>
                             </Link>
                           );
@@ -135,21 +141,37 @@ export default function Navbar() {
             {/* CALL TO ACTION BUTTON */}
             <Link
               href="/donate"
-              className="group relative overflow-hidden bg-[#1e8b35] text-white ml-2 px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[#1e8b35]/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#1e8b35]/40"
+              className="group relative overflow-hidden bg-[#1e8b35] text-white ml-2 px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[#1e8b35]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#1e8b35]/40"
             >
-              <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out" />
-              <Heart size={14} fill="currentColor" className="relative z-10 animate-pulse" />
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+              <Heart size={14} fill="currentColor" className="relative z-10 group-hover:scale-110 transition-transform duration-300" />
               <span className="relative z-10">Support Mission</span>
             </Link>
           </nav>
 
-          {/* MOBILE TOGGLE */}
+          {/* STYLISH ANIMATED HAMBURGER */}
           <button 
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden p-2 rounded-lg z-50 text-white hover:bg-white/10 transition-colors"
-            aria-label="Open Menu"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden relative z-[105] w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors focus:outline-none"
+            aria-label="Toggle Menu"
           >
-            <Menu size={28} />
+            <div className="w-5 h-4 relative flex flex-col justify-between overflow-hidden">
+              <motion.span 
+                animate={isMobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.4, ease: sleekEase }}
+                className="w-full h-[2px] bg-white rounded-full transform origin-center"
+              />
+              <motion.span 
+                animate={isMobileMenuOpen ? { x: 20, opacity: 0 } : { x: 0, opacity: 1 }}
+                transition={{ duration: 0.3, ease: sleekEase }}
+                className="w-full h-[2px] bg-white rounded-full"
+              />
+              <motion.span 
+                animate={isMobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.4, ease: sleekEase }}
+                className="w-full h-[2px] bg-white rounded-full transform origin-center"
+              />
+            </div>
           </button>
         </div>
       </header>
@@ -158,60 +180,56 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
+            {/* Darkened Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[101] lg:hidden"
             />
             
-            {/* Menu Panel */}
+            {/* 75% Width Menu Panel */}
             <motion.div 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-[85%] max-w-sm h-[100dvh] bg-[#0b132b] shadow-2xl z-[102] lg:hidden flex flex-col border-l border-white/10"
+              transition={{ duration: 0.7, ease: sleekEase }}
+              className="fixed top-0 right-0 w-[75vw] max-w-[400px] h-[100dvh] bg-[#0b132b]/95 backdrop-blur-xl shadow-2xl z-[102] lg:hidden flex flex-col border-l border-white/10 pt-24"
             >
-              <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <span className="font-serif text-xl font-bold text-white">Menu</span>
-                <button 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 bg-white/5 rounded-full text-white hover:bg-white/10 transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6">
+              <div className="flex-1 overflow-y-auto px-8 pb-8 space-y-8 no-scrollbar">
                 {navItems.map((item, i) => (
                   <motion.div
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 + 0.2, ease: sleekEase }}
                     key={item.label}
                     className="border-b border-white/5 pb-4"
                   >
                     <Link 
                       href={item.href} 
                       onClick={!item.children ? () => setIsMobileMenuOpen(false) : undefined}
-                      className="text-lg font-bold text-slate-300 hover:text-white transition-colors flex items-center justify-between"
+                      className="text-2xl font-serif font-bold text-white hover:text-[#1e8b35] transition-colors flex items-center justify-between group"
                     >
                       {item.label}
+                      {!item.children && <ArrowRight size={18} className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#1e8b35]" />}
                     </Link>
                     
                     {item.children && (
-                      <div className="mt-4 ml-4 space-y-4 border-l border-white/10 pl-4">
+                      <div className="mt-5 space-y-5">
                         {item.children.map((child) => (
                           <Link 
                             key={child.title}
                             href={child.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="block text-sm text-slate-400 hover:text-[#1e8b35] transition-colors"
+                            className="group/child flex items-center gap-4 text-slate-400 hover:text-white transition-colors"
                           >
-                            {child.title}
+                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/child:bg-[#1e8b35] group-hover/child:text-white transition-colors duration-300">
+                              <child.icon size={14} />
+                            </div>
+                            <span className="text-sm font-medium tracking-wide">{child.title}</span>
                           </Link>
                         ))}
                       </div>
@@ -220,15 +238,21 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="p-6 border-t border-white/10 bg-white/5">
+              {/* Bottom CTA Area */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6, ease: sleekEase }}
+                className="p-8 border-t border-white/10 bg-black/20"
+              >
                 <Link 
                   href="/donate" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 bg-[#1e8b35] text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#1e8b35]/20 active:scale-95 transition-transform"
+                  className="w-full flex items-center justify-center gap-3 bg-[#1e8b35] text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#1e8b35]/20 active:scale-95 transition-transform"
                 >
                   <Heart size={16} fill="currentColor" /> Support Our Mission
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </>
         )}
