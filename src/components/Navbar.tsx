@@ -11,6 +11,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll effect for the floating pill
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -36,20 +44,21 @@ export default function Navbar() {
         { title: "Protection", desc: "Fostering community resilience", href: "/programs/peace", icon: Shield },
       ]
     },
-    // { label: "Projects", href: "/projects" },
     { label: "Reports", href: "/reports" },
   ];
 
-  // Cinematic easing for the mobile menu
   const sleekEase = [0.22, 1, 0.36, 1];
 
   return (
     <>
-      {/* HEADER CONTAINER */}
-      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-[95%] sm:w-[85%] md:w-full lg:w-full xl:w-[75%] z-[100] mt-4 md:mt-0 md:pt-4 rounded-2xl md:rounded-none transition-all duration-300">
-        <div className="absolute inset-0 bg-[#0b132b]/90 backdrop-blur-md rounded-2xl md:rounded-none shadow-2xl shadow-black/20 border border-white/10 md:border-t-0 md:border-x-0 transition-all" />
-        
-        <div className="relative max-w-7xl mx-auto px-5 md:px-8 h-20 flex items-center justify-between">
+      <header 
+        className={`fixed left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 ease-out ${
+          scrolled 
+            ? "top-0 w-full rounded-none border-b border-white/10 bg-[#0b132b]/95 backdrop-blur-lg shadow-xl" 
+            : "top-4 w-[96%] md:w-[98%] max-w-[1400px] rounded-2xl bg-[#0b132b]/90 backdrop-blur-md shadow-2xl border border-white/10"
+        }`}
+      >
+        <div className="relative px-5 md:px-8 h-20 flex items-center justify-between">
           
           {/* LOGO SECTION */}
           <Link href="/" className="flex items-center gap-3 group z-50">
@@ -75,66 +84,78 @@ export default function Navbar() {
 
           {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-2">
-            {navItems.map((item) => (
-              <div 
-                key={item.label}
-                className="relative group"
-                onMouseEnter={() => setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link
-                  href={item.href}
-                  className="relative flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-slate-300 transition-colors hover:text-white rounded-lg"
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              
+              return (
+                <div 
+                  key={item.label}
+                  className="relative group"
+                  onMouseEnter={() => setActiveDropdown(item.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  {item.label}
-                  {item.children && (
-                    <ChevronDown 
-                      size={14} 
-                      className={`transition-transform duration-500 ease-out ${activeDropdown === item.label ? 'rotate-180 text-[#1e8b35]' : ''}`} 
+                  <Link
+                    href={item.href}
+                    className={`relative flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors rounded-lg hover:text-white ${
+                      isActive ? "text-white" : "text-slate-300"
+                    }`}
+                  >
+                    {item.label}
+                    {item.children && (
+                      <ChevronDown 
+                        size={14} 
+                        className={`transition-transform duration-500 ease-out ${activeDropdown === item.label ? 'rotate-180 text-[#1e8b35]' : ''}`} 
+                      />
+                    )}
+                    {/* Glowing Underline - Stays visible if active */}
+                    <span 
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-transparent via-[#1e8b35] to-transparent transition-all duration-500 ease-out ${
+                        isActive ? "w-[calc(100%-1rem)]" : "w-0 group-hover:w-[calc(100%-1rem)]"
+                      }`} 
                     />
-                  )}
-                  {/* Glowing Underline Slide Animation */}
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-gradient-to-r from-transparent via-[#1e8b35] to-transparent transition-all duration-500 ease-out group-hover:w-[calc(100%-1rem)]" />
-                </Link>
+                  </Link>
 
-                {/* DESKTOP DROPDOWN MENU */}
-                <AnimatePresence>
-                  {item.children && activeDropdown === item.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 15, scale: 0.95, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(4px)" }}
-                      transition={{ duration: 0.3, ease: sleekEase }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[360px] bg-white rounded-2xl shadow-2xl shadow-black/40 border border-slate-100/50 overflow-hidden p-3"
-                    >
-                      <div className="grid gap-1">
-                        {item.children.map((child) => {
-                          const Icon = child.icon;
-                          return (
-                            <Link 
-                              key={child.title} 
-                              href={child.href} 
-                              className="group/item flex items-start gap-4 p-3 hover:bg-slate-50 rounded-xl transition-all duration-300"
-                            >
-                              <div className="bg-[#0b132b]/5 p-2.5 rounded-xl text-[#0b132b] group-hover/item:bg-[#1e8b35] group-hover/item:text-white group-hover/item:shadow-lg group-hover/item:shadow-[#1e8b35]/20 transition-all duration-300">
-                                <Icon size={18} strokeWidth={2.5} />
-                              </div>
-                              <div className="flex flex-col flex-1 mt-0.5">
-                                <span className="text-sm font-bold text-slate-900 flex items-center justify-between group-hover/item:text-[#1e8b35] transition-colors">
-                                  {child.title}
-                                  <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
-                                </span>
-                                <span className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{child.desc}</span>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+                  {/* DESKTOP DROPDOWN MENU - Added pt-4 to wrapper to fix hover gap bug */}
+                  <AnimatePresence>
+                    {item.children && activeDropdown === item.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 15, scale: 0.95, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95, filter: "blur(4px)" }}
+                        transition={{ duration: 0.3, ease: sleekEase }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[360px]"
+                      >
+                        <div className="bg-white rounded-2xl shadow-2xl shadow-black/40 border border-slate-100/50 overflow-hidden p-3">
+                          <div className="grid gap-1">
+                            {item.children.map((child) => {
+                              const Icon = child.icon;
+                              return (
+                                <Link 
+                                  key={child.title} 
+                                  href={child.href} 
+                                  className="group/item flex items-start gap-4 p-3 hover:bg-slate-50 rounded-xl transition-all duration-300"
+                                >
+                                  <div className="bg-[#0b132b]/5 p-2.5 rounded-xl text-[#0b132b] group-hover/item:bg-[#1e8b35] group-hover/item:text-white group-hover/item:shadow-lg group-hover/item:shadow-[#1e8b35]/20 transition-all duration-300">
+                                    <Icon size={18} strokeWidth={2.5} />
+                                  </div>
+                                  <div className="flex flex-col flex-1 mt-0.5">
+                                    <span className="text-sm font-bold text-slate-900 flex items-center justify-between group-hover/item:text-[#1e8b35] transition-colors">
+                                      {child.title}
+                                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
+                                    </span>
+                                    <span className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{child.desc}</span>
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
 
             <div className="h-6 w-[1px] mx-2 bg-white/10" />
 
@@ -180,7 +201,6 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Darkened Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -190,7 +210,6 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[101] lg:hidden"
             />
             
-            {/* 75% Width Menu Panel */}
             <motion.div 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -238,7 +257,6 @@ export default function Navbar() {
                 ))}
               </div>
 
-              {/* Bottom CTA Area */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
