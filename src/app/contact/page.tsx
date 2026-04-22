@@ -75,7 +75,7 @@ export default function ContactPage() {
                   </div>
                   <div className="pt-1">
                     <h4 className="font-bold text-[#0b132b] text-lg">Phone</h4>
-                    <p className="text-slate-500 font-light mt-1">+211 (0) 9XX XXX XXX</p>
+                    <p className="text-slate-500 font-light mt-1">+211 923 846 396</p>
                   </div>
                 </motion.div>
 
@@ -86,7 +86,7 @@ export default function ContactPage() {
                   </div>
                   <div className="pt-1">
                     <h4 className="font-bold text-[#0b132b] text-lg">Email</h4>
-                    <p className="text-slate-500 font-light mt-1">info@ccdasouthsudan.org</p>
+                    <p className="text-slate-500 font-light mt-1">info@ccda-ss.org</p>
                   </div>
                 </motion.div>
               </div>

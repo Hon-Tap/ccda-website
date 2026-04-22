@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import {
   Phone,
   Mail,
@@ -15,6 +15,7 @@ import {
   Heart,
   ArrowRight,
   Globe,
+  Sparkles
 } from "lucide-react";
 
 const navItems = [
@@ -24,10 +25,11 @@ const navItems = [
     label: "Programs",
     href: "/programs",
     children: [
-      { title: "Food Security", href: "/programs/food-security", desc: "Combatting hunger through sustainable farming." },
-      { title: "Education", href: "/programs/education", desc: "Empowering the next generation of leaders." },
       { title: "Health Services", href: "/programs/health", desc: "Providing vital medical care to remote areas." },
+      { title: "WASH", href: "/programs/wash", desc: "Safe water & hygiene protocols." },
+      { title: "Education", href: "/programs/education", desc: "Empowering the next generation of leaders." },
       { title: "Protection & Peace", href: "/programs/peace", desc: "Building resilient and safe communities." },
+      { title: "Food Security", href: "/programs/food-security", desc: "Combatting hunger through sustainable farming." },
     ],
   },
   { label: "News", href: "/news" },
@@ -39,70 +41,72 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { scrollY } = useScroll();
 
-  // Handle Scroll effect
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Unified scroll handler for elegance and functionality
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 40);
+  });
 
   return (
     <>
-      {/* --- TOP TRUST BAR --- */}
-      <div className={`hidden md:block transition-all duration-300 bg-[#0b132b] text-white overflow-hidden ${isScrolled ? 'h-0' : 'h-10'}`}>
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between text-[12px] font-medium tracking-wide">
-          <div className="flex items-center gap-6">
-            <a href="tel:+211923846396" className="flex items-center gap-2 hover:text-[#1e8b35] transition-colors">
-              <Phone size={14} className="text-[#1e8b35]" /> +211 923 846 396
+      {/* --- TOP BAR (Full Width) --- */}
+      <div 
+        className={`hidden lg:block transition-all duration-500 bg-[#0b132b] text-slate-300 overflow-hidden ${
+          isScrolled ? 'h-0 opacity-0' : 'h-12 border-b border-white/5'
+        }`}
+      >
+        <div className="max-w-[1440px] mx-auto px-8 h-full flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em]">
+          <div className="flex items-center gap-8">
+            <a href="tel:+211923846396" className="flex items-center gap-2 hover:text-emerald-400 transition-colors group">
+              <Phone size={12} className="text-emerald-500 group-hover:animate-pulse" /> +211 923 846 396
             </a>
-            <a href="mailto:info@ccda-ss.org" className="flex items-center gap-2 hover:text-[#1e8b35] transition-colors">
-              <Mail size={14} className="text-[#1e8b35]" /> info@ccda-ss.org
+            <a href="mailto:info@ccda-ss.org" className="flex items-center gap-2 hover:text-emerald-400 transition-colors">
+              <Mail size={12} className="text-emerald-500" /> info@ccda-ss.org
             </a>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-2 opacity-80">
-              <MapPin size={14} /> Juba, South Sudan
-            </span>
-            <div className="h-4 w-[1px] bg-white/20" />
-            <span className="flex items-center gap-1">
-              <Globe size={14} /> EN
-            </span>
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2"><MapPin size={12} /> Juba, South Sudan</span>
+            <div className="h-3 w-[1px] bg-white/10" />
+            <div className="flex items-center gap-2 cursor-default">
+              <Globe size={12} className="text-emerald-500" /> 
+              <span>EN</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* --- MAIN NAVIGATION --- */}
+      {/* --- MAIN NAVIGATION (Full Width) --- */}
       <header 
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-50 w-full transition-all duration-500 ${
           isScrolled 
-            ? "bg-white/95 backdrop-blur-md shadow-lg py-2" 
-            : "bg-white py-4"
+            ? "bg-white/90 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] py-3" 
+            : "bg-white py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 flex items-center justify-between">
           
-          {/* LOGO AREA */}
-          <Link href="/" className="group flex items-center gap-3">
-            <div className="relative w-12 h-12 overflow-hidden rounded-lg border-2 border-[#1e8b35]/10 group-hover:border-[#1e8b35] transition-all">
+          {/* BRANDING */}
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative w-14 h-14 overflow-hidden rounded-xl border border-slate-100 shadow-sm">
               <Image
                 src="/CCDA-logo.jpeg"
                 alt="CCDA Logo"
                 fill
-                className="object-cover transition-transform group-hover:scale-110"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-2xl tracking-tighter text-[#0b132b] leading-none">
+              <span className="font-serif text-3xl tracking-tighter text-[#0b132b] leading-none">
                 CCDA
               </span>
-              <span className="text-[10px] font-bold tracking-[0.2em] text-[#1e8b35] uppercase">
+              <span className="text-[9px] font-black tracking-[0.4em] text-emerald-600 uppercase mt-1">
                 South Sudan
               </span>
             </div>
           </Link>
 
-          {/* DESKTOP MENU */}
+          {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -110,45 +114,47 @@ export default function Navbar() {
               return (
                 <div 
                   key={item.label}
-                  className="relative px-2"
+                  className="relative px-1"
                   onMouseEnter={() => setActiveDropdown(item.label)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
                   <Link
                     href={item.href}
-                    className={`relative px-3 py-2 text-sm font-bold transition-colors flex items-center gap-1 rounded-md
-                      ${isActive ? "text-[#1e8b35]" : "text-gray-600 hover:text-[#1e8b35] hover:bg-gray-50"}`}
+                    className={`px-5 py-3 text-[11px] font-black uppercase tracking-[0.2em] transition-all flex items-center gap-2 rounded-xl
+                      ${isActive ? "text-emerald-700 bg-emerald-50/50" : "text-slate-500 hover:text-emerald-600 hover:bg-slate-50"}`}
                   >
                     {item.label}
-                    {item.children && <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />}
-                    
-                    {isActive && (
-                      <motion.div layoutId="nav-underline" className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#1e8b35]" />
+                    {item.children && (
+                      <ChevronDown size={12} className={`transition-transform duration-500 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />
                     )}
                   </Link>
 
-                  {/* MEGA DROPDOWN */}
+                  {/* PREMIUM MEGA DROP (Edge Aligned) */}
                   <AnimatePresence>
                     {item.children && activeDropdown === item.label && (
                       <motion.div
-                        initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 15, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-[320px] bg-white rounded-xl shadow-2xl border border-gray-100 p-4"
+                        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        className="absolute top-full left-0 mt-2 w-[420px] bg-white rounded-[1.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.12)] border border-slate-100 p-5 overflow-hidden"
                       >
-                        <div className="grid gap-2">
+                        <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
+                          <Sparkles size={100} className="text-[#0b132b]" />
+                        </div>
+                        
+                        <div className="flex flex-col gap-1 relative z-10">
                           {item.children.map((child) => (
                             <Link
                               key={child.title}
                               href={child.href}
-                              className="group flex items-start gap-3 p-3 rounded-lg hover:bg-green-50 transition-colors"
+                              className="group flex flex-col gap-0.5 p-4 rounded-xl hover:bg-emerald-50 transition-all duration-300"
                             >
-                              <div className="mt-1 w-2 h-2 rounded-full bg-[#1e8b35] opacity-0 group-hover:opacity-100 transition-opacity" />
-                              <div>
-                                <div className="text-sm font-bold text-gray-900 group-hover:text-[#1e8b35]">{child.title}</div>
-                                <p className="text-xs text-gray-500 line-clamp-1">{child.desc}</p>
-                              </div>
+                              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600 flex items-center gap-2">
+                                {child.title} 
+                                <ArrowRight size={10} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                              </span>
+                              <p className="text-[11px] text-slate-400 font-medium">{child.desc}</p>
                             </Link>
                           ))}
                         </div>
@@ -159,97 +165,92 @@ export default function Navbar() {
               );
             })}
 
-            {/* DONATE CALL TO ACTION */}
+            {/* CTA BUTTON */}
             <Link
               href="/contact"
-              className="ml-6 group relative overflow-hidden bg-[#1e8b35] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md hover:shadow-green-200 transition-all active:scale-95"
+              className="ml-6 group relative px-8 py-4 bg-[#1e8b35] text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] overflow-hidden transition-all hover:shadow-[0_10px_25px_rgba(30,139,53,0.3)] active:scale-95"
             >
               <span className="relative z-10 flex items-center gap-2">
-                <Heart size={16} className="group-hover:fill-white transition-colors" />
-                Support Our Mission
+                <Heart size={14} className="group-hover:fill-white transition-all" />
+                Support Mission
               </span>
-              <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-[#0b132b] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
             </Link>
           </nav>
 
           {/* MOBILE TOGGLE */}
           <button 
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-lg bg-gray-50 text-[#0b132b]"
+            onClick={() => setMobileOpen(true)}
+            className="lg:hidden w-12 h-12 flex items-center justify-center rounded-xl bg-slate-50 text-[#0b132b]"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={24} />
           </button>
         </div>
       </header>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* --- MOBILE OVERLAY (Iconic Style) --- */}
       <AnimatePresence>
         {mobileOpen && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm lg:hidden"
-            />
-            <motion.div 
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-[85%] max-w-[400px] bg-white z-[70] shadow-2xl lg:hidden p-8 flex flex-col"
-            >
-              <div className="flex items-center justify-between mb-10">
-                <span className="font-black text-xl text-[#0b132b]">MENU</span>
-                <button onClick={() => setMobileOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
-                  <X size={24} />
-                </button>
+          <motion.div 
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            className="fixed inset-0 z-[100] bg-[#0b132b] p-8 lg:hidden flex flex-col"
+          >
+            <div className="flex items-center justify-between mb-16">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white rounded-lg p-1">
+                  <Image src="/CCDA-logo.jpeg" alt="Logo" width={40} height={40} className="rounded-sm" />
+                </div>
+                <span className="text-white font-serif text-2xl tracking-tighter">CCDA</span>
               </div>
+              <button 
+                onClick={() => setMobileOpen(false)}
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 text-white"
+              >
+                <X size={24} />
+              </button>
+            </div>
 
-              <nav className="flex-1 space-y-2">
-                {navItems.map((item) => (
-                  <div key={item.label} className="border-b border-gray-50">
-                    <Link
-                      href={item.href}
-                      onClick={() => !item.children && setMobileOpen(false)}
-                      className="flex items-center justify-between py-4 text-lg font-bold text-gray-800 hover:text-[#1e8b35]"
-                    >
-                      {item.label}
-                      {item.children && <ChevronDown size={18} />}
-                    </Link>
-                    {item.children && (
-                      <div className="pl-4 pb-4 space-y-3">
-                        {item.children.map(child => (
-                          <Link 
-                            key={child.title} 
-                            href={child.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="block text-gray-500 font-medium hover:text-[#1e8b35]"
-                          >
-                            {child.title}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </nav>
-
-              <div className="mt-auto pt-10">
-                <Link
-                  href="/donate"
-                  className="flex items-center justify-center gap-3 bg-[#1e8b35] text-white w-full py-4 rounded-xl font-bold shadow-lg"
+            <nav className="flex-1 space-y-8 overflow-y-auto">
+              {navItems.map((item, idx) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
                 >
-                  <Heart size={20} />
-                  Donate Now
-                </Link>
-                <p className="text-center text-xs text-gray-400 mt-6 font-medium">
-                  Strengthening Communities in South Sudan
-                </p>
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-4xl font-serif text-white hover:text-emerald-400 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+
+            <div className="mt-auto pt-10 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                 <a href="tel:+211923846396" className="p-4 rounded-2xl bg-white/5 text-white text-center">
+                    <Phone size={20} className="mx-auto mb-2 text-emerald-500" />
+                    <span className="text-[10px] font-bold block uppercase tracking-widest">Call Us</span>
+                 </a>
+                 <a href="mailto:info@ccda-ss.org" className="p-4 rounded-2xl bg-white/5 text-white text-center">
+                    <Mail size={20} className="mx-auto mb-2 text-emerald-500" />
+                    <span className="text-[10px] font-bold block uppercase tracking-widest">Email</span>
+                 </a>
               </div>
-            </motion.div>
-          </>
+              <Link
+                href="/donate"
+                className="w-full py-6 bg-emerald-600 text-white rounded-2xl font-black text-center uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl"
+              >
+                <Heart size={20} fill="currentColor" /> Donate Now
+              </Link>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
