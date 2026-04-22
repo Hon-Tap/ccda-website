@@ -161,7 +161,7 @@ export default function Navbar() {
 
             {/* DONATE CALL TO ACTION */}
             <Link
-              href="/donate"
+              href="/contact"
               className="ml-6 group relative overflow-hidden bg-[#1e8b35] text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md hover:shadow-green-200 transition-all active:scale-95"
             >
               <span className="relative z-10 flex items-center gap-2">
