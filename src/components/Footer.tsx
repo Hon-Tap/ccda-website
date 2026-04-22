@@ -2,147 +2,230 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { Mail, Phone, MapPin } from "lucide-react";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#0b132b] pt-16 pb-6 text-white mt-24 border-t border-white/5">
-      
-      {/* Ambient background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/3 w-[300px] h-[300px] bg-[#1e8b35]/5 rounded-full blur-[100px]" />
-      </div>
+    <footer className="bg-[#0b132b] text-white mt-20">
 
-      {/* COMPACT IMPACT CTA - Tighter padding and margins */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-[1200px] z-30">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1e8b35] via-[#166c28] to-[#0f4a1a] p-6 md:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.3)] border border-white/10 backdrop-blur-xl">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.1),transparent_70%)] pointer-events-none" />
+      {/* BRAND ACCENT LINE — shared system element */}
+      <div className="h-[3px] bg-[#1e8b35]" />
 
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
-            <div className="text-center md:text-left max-w-xl">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold text-white mb-2 tracking-tight">
-                Ready to make a <span className="text-green-300">lasting difference?</span>
-              </h2>
-              <p className="text-green-50/80 text-xs md:text-sm font-medium leading-relaxed">
-                Join our global network of partners in restoring hope and rebuilding communities across South Sudan.
-              </p>
-            </div>
+      {/* ============================== */}
+      {/* MAIN FOOTER */}
+      {/* ============================== */}
 
-            <Link
-              href="/contact"
-              className="group shrink-0 bg-white text-[#0f4a1a] px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-green-50 transition-all duration-300 shadow-xl flex items-center gap-3 active:scale-95"
-            >
-              Get Involved
-              <div className="w-6 h-6 rounded-md bg-[#0f4a1a]/5 flex items-center justify-center group-hover:bg-[#1e8b35] group-hover:text-white transition-all duration-300">
-                <ArrowRight size={14} className="transform group-hover:translate-x-0.5 transition-transform" />
-              </div>
-            </Link>
-          </div>
-          <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl" />
-        </div>
-      </div>
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
 
-      <div className="relative max-w-7xl mx-auto px-6 mt-12 z-10">
-        {/* Adjusted Grid - Reduced gap from gap-10 to gap-6 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6 pb-10 border-b border-white/5">
-          
-          {/* Brand Section */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-white p-1 rounded-xl shadow-md flex items-center justify-center w-10 h-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-start">
+
+          {/* ============================== */}
+          {/* ORGANIZATION BLOCK */}
+          {/* ============================== */}
+
+          <div className="lg:col-span-5 space-y-4">
+
+            <Link href="/" className="flex items-center gap-3">
+
+              <div className="flex items-center gap-3 border-l-4 border-[#1e8b35] pl-3">
+
+                <div className="w-10 h-10 bg-white border border-gray-200 flex items-center justify-center">
+
                   <Image
                     src="/CCDA-logo.jpeg"
                     alt="CCDA Logo"
-                    width={40}
-                    height={40}
+                    width={36}
+                    height={36}
                     priority
                     className="object-contain"
                   />
-                </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-serif font-bold tracking-tight text-white leading-none">CCDA</span>
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#1e8b35] mt-1">South Sudan</span>
-              </div>
-            </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-[280px]">
-              A faith-based organization restoring hope, dignity, and resilience through sustainable development and emergency relief.
+                </div>
+
+                <div className="flex flex-col leading-tight">
+
+                  <span className="font-semibold text-base">
+                    CCDA
+                  </span>
+
+                  <span className="text-[10px] font-semibold tracking-widest text-[#1e8b35] uppercase">
+                    South Sudan
+                  </span>
+
+                </div>
+
+              </div>
+
+            </Link>
+
+            <p className="text-sm text-slate-300 leading-relaxed max-w-[340px]">
+              A faith-based humanitarian organization restoring hope,
+              dignity, and resilience through sustainable development,
+              emergency relief, and community empowerment.
             </p>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 pt-1">
+
               {[
-                { icon: FaFacebook, color: "#1877F2", label: "Facebook" },
-                { icon: FaLinkedin, color: "#0A66C2", label: "LinkedIn" },
-                { icon: FaWhatsapp, color: "#25D366", label: "WhatsApp" }
+                {
+                  icon: FaFacebookF,
+                  label: "Facebook",
+                },
+                {
+                  icon: FaLinkedinIn,
+                  label: "LinkedIn",
+                },
+                {
+                  icon: FaWhatsapp,
+                  label: "WhatsApp",
+                },
               ].map((social) => (
                 <Link
                   key={social.label}
                   href="#"
-                  className="group relative w-8 h-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                  aria-label={social.label}
+                  className="w-8 h-8 rounded-md bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
                 >
-                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: social.color }} />
-                  <social.icon size={14} className="relative z-10 text-slate-400 group-hover:text-white transition-colors" />
+                  <social.icon size={14} />
                 </Link>
               ))}
+
             </div>
+
           </div>
 
-          {/* Navigation links */}
-          <div className="lg:col-span-2 lg:col-start-6">
-            <h4 className="font-bold uppercase tracking-widest text-[9px] text-white/50 mb-4">Navigation</h4>
-            <ul className="space-y-2.5">
-              {["Our History", "Thematic Areas", "Field Projects", "Reports"].map((item) => (
+          {/* ============================== */}
+          {/* NAVIGATION */}
+          {/* ============================== */}
+
+          <div className="lg:col-span-3">
+
+            <h4 className="font-semibold text-sm mb-3 text-white">
+              Navigation
+            </h4>
+
+            <ul className="space-y-2 text-sm">
+
+              {[
+                "Our History",
+                "Thematic Areas",
+                "Field Projects",
+                "Reports",
+              ].map((item) => (
                 <li key={item}>
-                  <Link href="#" className="text-slate-400 hover:text-[#1e8b35] text-xs transition-colors flex items-center gap-2 group">
-                    <span className="w-1 h-1 rounded-full bg-[#1e8b35] scale-0 group-hover:scale-100 transition-transform" />
+                  <Link
+                    href="#"
+                    className="text-slate-300 hover:text-white transition-colors"
+                  >
                     {item}
                   </Link>
                 </li>
               ))}
+
             </ul>
+
           </div>
 
-          {/* Location / Headquarters */}
-          <div className="lg:col-span-3">
-            <h4 className="font-bold uppercase tracking-widest text-[9px] text-white/50 mb-4">Headquarters</h4>
-            <div className="space-y-3">
-              <div className="flex gap-2.5 items-start text-xs text-slate-400">
-                <MapPin size={14} className="text-[#1e8b35] shrink-0 mt-0.5" />
-                <span className="leading-relaxed">Thongpiny, Block 3, Plot 631,<br/>Juba, South Sudan</span>
+          {/* ============================== */}
+          {/* CONTACT */}
+          {/* ============================== */}
+
+          <div className="lg:col-span-4">
+
+            <h4 className="font-semibold text-sm mb-3 text-white">
+              Headquarters
+            </h4>
+
+            <div className="space-y-3 text-sm text-slate-300">
+
+              <div className="flex gap-3 items-start">
+
+                <MapPin
+                  size={16}
+                  className="text-[#1e8b35] mt-0.5 shrink-0"
+                />
+
+                <span className="leading-relaxed">
+                  Thongpiny, Block 3, Plot 631
+                  <br />
+                  Juba, South Sudan
+                </span>
+
               </div>
-              <div className="flex gap-2.5 items-center text-xs text-slate-400">
-                <Phone size={14} className="text-[#1e8b35] shrink-0" />
-                <span>+211 923 846 396</span>
+
+              <div className="flex gap-3 items-center">
+
+                <Phone
+                  size={16}
+                  className="text-[#1e8b35]"
+                />
+
+                <span>
+                  +211 923 846 396
+                </span>
+
               </div>
+
+              <div className="flex gap-3 items-center">
+
+                <Mail
+                  size={16}
+                  className="text-[#1e8b35]"
+                />
+
+                <span>
+                  info@ccda.org
+                </span>
+
+              </div>
+
             </div>
+
           </div>
 
-          {/* Newsletter / Compact */}
-          <div className="lg:col-span-2">
-            <h4 className="font-bold uppercase tracking-widest text-[9px] text-white/50 mb-4">Newsletter</h4>
-            <form className="relative group" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Email address"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#1e8b35] transition-all"
-              />
-              <button className="absolute right-1 top-1 bottom-1 bg-[#1e8b35] text-white px-2.5 rounded-md hover:bg-[#166c28] transition-all">
-                <ArrowRight size={12} />
-              </button>
-            </form>
-          </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] text-slate-500 uppercase tracking-widest">
-          <p>© {new Date().getFullYear()} CCDA South Sudan</p>
-          <div className="flex gap-6">
-            <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-          </div>
-        </div>
       </div>
+
+      {/* ============================== */}
+      {/* BOTTOM BAR */}
+      {/* ============================== */}
+
+      <div className="border-t border-white/10">
+
+        <div className="max-w-[1200px] mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-slate-400">
+
+          <p>
+            © {new Date().getFullYear()} CCDA South Sudan
+          </p>
+
+          <div className="flex gap-5">
+
+            <Link
+              href="#"
+              className="hover:text-white transition-colors"
+            >
+              Privacy
+            </Link>
+
+            <Link
+              href="#"
+              className="hover:text-white transition-colors"
+            >
+              Terms
+            </Link>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </footer>
   );
 }

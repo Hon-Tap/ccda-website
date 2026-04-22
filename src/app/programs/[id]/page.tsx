@@ -4,125 +4,360 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { 
-  Heart, Droplets, BookOpen, ShieldCheck, Home, Sprout, 
-  ArrowLeft, CheckCircle2, ArrowUpRight, FileText
+import {
+  Heart,
+  Droplets,
+  BookOpen,
+  ShieldCheck,
+  Home,
+  Sprout,
+  ArrowLeft,
+  CheckCircle2,
+  FileText,
 } from "lucide-react";
-import Navbar from "@/components/Navbar"; 
 
-const programDetails = {
-  "health": { title: "Health Services", icon: Heart, image: "/img (1).jpeg", stat: "15+ Facilities", headline: "Delivering life-saving clinical services to hard-to-reach rural communities.", overview: "Our health frameworks focus on drastically reducing mortality and morbidity among vulnerable populations. This is achieved through direct operational support to primary healthcare units, rapid-response mobile medical clinics, and comprehensive maternal care systems.", objectives: ["Improve access to essential primary healthcare and maternal services.", "Deploy localized training for community health workers (CHWs).", "Secure supply chains for essential drug supplies and medical equipment."] },
-  "wash": { title: "WASH Engineering", icon: Droplets, image: "/img (4).jpeg", stat: "50k+ Access", headline: "Architecting sustainable water, sanitation, and hygiene solutions.", overview: "We approach WASH not just as aid, but as public health engineering. We construct and rehabilitate deep water points, promote behavioral hygiene shifts, and establish self-reliant community-led sanitation committees to ensure operational longevity.", objectives: ["Drill and rehabilitate deep-yield community boreholes.", "Distribute rapid-response core hygiene and dignity kits.", "Establish and train localized water management committees."] },
-  "education": { title: "Education Systems", icon: BookOpen, image: "/img (3).jpeg", stat: "12 Schools", headline: "Engineering inclusive learning and youth empowerment frameworks.", overview: "We ensure conflict-affected demographics retain access to safe, high-quality education. Our projects span from physical classroom construction and material supply chains to complex pedagogical training for volunteer educators.", objectives: ["Establish structural, safe, temporary learning spaces (TLS).", "Manage the distribution of comprehensive scholastic materials.", "Deploy localized accelerated learning programs (ALP)."] },
-  "protection": { title: "Human Protection", icon: ShieldCheck, image: "/img (4).jpeg", stat: "Child-Friendly", headline: "Safeguarding the rights, dignity, and psychology of vulnerable groups.", overview: "The protection sector operates as a specialized shield. We work to preemptively prevent and actively respond to violence, exploitation, and abuse through highly trained community-based networks and trauma-informed care centers.", objectives: ["Operate psychologically supervised child-friendly spaces (CFS).", "Execute wide-scale human rights awareness campaigns.", "Provide discrete case management and specialized referrals."] },
-  "shelter-nfi": { title: "Shelter & NFIs", icon: Home, image: "/img (3).jpeg", stat: "Emergency Aid", headline: "Deploying rapid housing structures and critical domestic assets.", overview: "In the immediate aftermath of displacement, we deploy life-saving shelter materials and essential non-food items (NFIs). This sector is designed for rapid mobilization, helping fractured families regain safety, warmth, and basic privacy.", objectives: ["Distribute rapid-response emergency shelter kits.", "Supply comprehensive household survival NFI kits.", "Facilitate secure cash-for-shelter market programs."] },
-  "food-security": { title: "Agronomic Resilience", icon: Sprout, image: "/img (4).jpeg", stat: "Agri-Resilience", headline: "Transitioning communities to sovereign, climate-resilient farming.", overview: "We actively shift the paradigm from emergency food distributions to agricultural sovereignty. We empower communities to cultivate their own futures by providing climate-resilient seeds, modern tools, and advanced agronomic training.", objectives: ["Distribute high-yield, climate-resilient crop seeds.", "Establish and train specialized Farmer Field Schools (FFS).", "Create and capitalize Village Savings and Loan Associations (VSLA)."] }
+/* ---------------- Animation ---------------- */
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 },
+  },
 };
 
-export default function SubProgramPage() {
+const stagger = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+/* ---------------- Data ---------------- */
+
+const programDetails = {
+  health: {
+    title: "Health",
+    icon: Heart,
+    image: "/img (1).jpeg",
+    stat: "Health Facilities",
+    headline:
+      "Delivering life-saving clinical services to hard-to-reach rural communities.",
+    overview:
+      "Our health frameworks focus on reducing mortality and improving access to essential healthcare through mobile clinics, maternal health programs, and strengthened health facilities.",
+    objectives: [
+      "Improve access to essential healthcare.",
+      "Train community health workers.",
+      "Strengthen medical supply systems.",
+    ],
+  },
+
+  wash: {
+    title: "WASH Engineering",
+    icon: Droplets,
+    image: "/img (4).jpeg",
+    stat: "Access to clean water",
+    headline:
+      "Providing safe water, sanitation, and hygiene services for communities.",
+    overview:
+      "We build and rehabilitate water systems, promote hygiene awareness, and establish community-led water management structures.",
+    objectives: [
+      "Drill and rehabilitate boreholes.",
+      "Promote hygiene education.",
+      "Train water management committees.",
+    ],
+  },
+
+  education: {
+    title: "Education Systems",
+    icon: BookOpen,
+    image: "/img (3).jpeg",
+    stat: "Schools",
+    headline:
+      "Ensuring children and youth have access to safe and inclusive education.",
+    overview:
+      "Our programs support schools, provide learning materials, and train teachers to improve quality education in vulnerable communities.",
+    objectives: [
+      "Construct learning spaces.",
+      "Provide education materials.",
+      "Support teacher training.",
+    ],
+  },
+
+  protection: {
+    title: "Human Protection",
+    icon: ShieldCheck,
+    image: "/img (4).jpeg",
+    stat: "Child-Friendly",
+    headline:
+      "Protecting vulnerable populations from harm and exploitation.",
+    overview:
+      "We provide child protection services, psychosocial support, and community awareness programs.",
+    objectives: [
+      "Operate child-friendly spaces.",
+      "Provide psychosocial support.",
+      "Promote protection awareness.",
+    ],
+  },
+
+  "shelter-nfi": {
+    title: "Shelter & NFIs",
+    icon: Home,
+    image: "/img (3).jpeg",
+    stat: "Emergency Aid",
+    headline:
+      "Providing shelter and essential household items to displaced families.",
+    overview:
+      "We distribute emergency shelter kits and household items to restore dignity and safety.",
+    objectives: [
+      "Provide emergency shelter.",
+      "Distribute household kits.",
+      "Support displaced families.",
+    ],
+  },
+
+  "food-security": {
+    title: "Food Security",
+    icon: Sprout,
+    image: "/img (4).jpeg",
+    stat: "Agri Support",
+    headline:
+      "Building resilient livelihoods through agriculture and food production.",
+    overview:
+      "We provide seeds, tools, and training to help communities grow food and sustain livelihoods.",
+    objectives: [
+      "Distribute seeds and tools.",
+      "Train farmers.",
+      "Support livelihood programs.",
+    ],
+  },
+};
+
+/* ---------------- Page ---------------- */
+
+export default function ProgramDetailPage() {
   const params = useParams();
   const id = (params?.id as string) || "health";
-  const program = programDetails[id as keyof typeof programDetails] || programDetails["health"];
+
+  const program =
+    programDetails[id as keyof typeof programDetails] ||
+    programDetails.health;
 
   return (
-    <main className="bg-white text-[#0b132b] font-sans selection:bg-[#1e8b35] selection:text-white">
-      <Navbar />
-      
-      {/* --- HERO DOSSIER --- */}
-      <section className="pt-40 pb-20 px-6 max-w-[1400px] mx-auto border-b border-slate-100">
-        <Link href="/programs" className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 hover:text-[#1e8b35] transition-colors mb-16">
-          <ArrowLeft size={14} /> Return to Incubator
-        </Link>
+    <main className="bg-[#f6f8fb] text-[#0b132b]">
 
-        <div className="grid lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-7 space-y-8">
-            <div className="flex items-center gap-4">
-              <program.icon className="text-[#1e8b35] w-8 h-8" strokeWidth={1.5} />
-              <span className="text-[#1e8b35] font-bold text-[10px] uppercase tracking-[0.4em]">Sector Dossier</span>
+      {/* HERO */}
+
+      <section className="relative h-[65vh] min-h-[560px] flex items-center">
+
+        <Image
+          src={program.image}
+          alt={program.title}
+          fill
+          priority
+          className="object-cover"
+        />
+
+        <div className="absolute inset-0 bg-[#0b132b]/65" />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
+
+          <Link
+            href="/programs"
+            className="inline-flex items-center gap-3 text-white/80 hover:text-[#1e8b35] mb-12"
+          >
+            <ArrowLeft size={18} />
+            Back to Programs
+          </Link>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6 max-w-3xl"
+          >
+
+            <div className="flex items-center gap-4 text-[#1e8b35]">
+              <program.icon size={28} />
+              <span className="uppercase text-sm tracking-widest font-semibold">
+                Program Area
+              </span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-serif tracking-tight leading-[0.9] text-[#0b132b]">
-              {program.title}.
-            </h1>
-            <p className="text-2xl font-serif text-slate-500 italic leading-relaxed max-w-xl">
-              "{program.headline}"
-            </p>
-          </div>
-          
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-[#0b132b]/10 group">
-              <Image 
-                src={program.image} 
-                alt={program.title} 
-                fill 
-                className="object-cover transition-transform duration-1000 group-hover:scale-105" 
-              />
-              <div className="absolute inset-0 bg-[#0b132b]/20 group-hover:bg-transparent transition-colors duration-500" />
-              
-              {/* Floating Stat Badge */}
-              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl">
-                <span className="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-bold block mb-1">Key Metric</span>
-                <p className="text-3xl font-serif text-[#0b132b]">{program.stat}</p>
-              </div>
-            </div>
-          </div>
+
+            <motion.h1
+              variants={fadeUp}
+              className="text-5xl md:text-6xl font-semibold text-white"
+            >
+              {program.title}
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              className="text-xl text-white/90 font-light"
+            >
+              {program.headline}
+            </motion.p>
+
+          </motion.div>
+
         </div>
+
       </section>
 
-      {/* --- STRATEGIC BRIEFING --- */}
-      <section className="py-32">
-        <div className="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-12 gap-16">
-          
-          <div className="lg:col-span-8 space-y-20">
-            {/* Overview */}
+      {/* METRIC */}
+
+      <section className="-mt-16 px-6 relative z-20">
+
+        <div className="max-w-6xl mx-auto">
+
+          <div className="bg-white rounded-3xl p-10 shadow-xl border border-slate-100 flex justify-between items-center">
+
             <div>
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-8 flex items-center gap-4">
-                <span className="w-8 h-[1px] bg-slate-300"></span> Strategic Overview
-              </h3>
-              <p className="text-2xl leading-relaxed text-slate-700 font-light">
+              <p className="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-2">
+                Key Impact
+              </p>
+
+              <h2 className="text-4xl font-semibold">
+                {program.stat}
+              </h2>
+            </div>
+
+            <div className="w-16 h-16 rounded-2xl bg-[#1e8b35]/15 flex items-center justify-center">
+              <program.icon
+                className="text-[#1e8b35]"
+                size={30}
+              />
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* CONTENT */}
+
+      <section className="py-28 px-6">
+
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-16">
+
+          {/* LEFT */}
+
+          <div className="lg:col-span-2 space-y-16">
+
+            <div>
+              <h2 className="text-3xl font-semibold mb-6">
+                Program Overview
+              </h2>
+
+              <p className="text-lg text-slate-600 leading-relaxed">
                 {program.overview}
               </p>
             </div>
-            
-            {/* Objectives */}
+
+            {/* OBJECTIVES */}
+
             <div>
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-8 flex items-center gap-4">
-                <span className="w-8 h-[1px] bg-slate-300"></span> Tactical Objectives
-              </h3>
-              <div className="grid md:grid-cols-2 gap-10">
+
+              <h2 className="text-3xl font-semibold mb-10">
+                Strategic Objectives
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-8">
+
                 {program.objectives.map((obj, i) => (
-                  <div key={i} className="group border-l-2 border-slate-100 pl-6 hover:border-[#1e8b35] transition-colors duration-300">
-                    <span className="text-[#1e8b35] font-serif text-2xl block mb-3">0{i + 1}</span>
-                    <p className="text-slate-600 font-light leading-relaxed">{obj}</p>
+                  <div
+                    key={i}
+                    className="
+                      p-8
+                      rounded-2xl
+                      border
+                      border-slate-100
+                      bg-white
+                      hover:border-[#1e8b35]
+                      hover:shadow-lg
+                      transition
+                    "
+                  >
+
+                    <CheckCircle2
+                      className="text-[#1e8b35] mb-4"
+                      size={26}
+                    />
+
+                    <p className="text-slate-600">
+                      {obj}
+                    </p>
+
                   </div>
                 ))}
+
               </div>
+
             </div>
+
           </div>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
+          {/* SIDEBAR */}
+
+          <div className="space-y-6">
+
             <div className="bg-[#0b132b] text-white p-10 rounded-3xl">
-              <h4 className="font-serif text-3xl mb-8">Compliance <br/><span className="text-slate-400 italic font-light">Standards</span></h4>
-              <div className="space-y-6">
-                {["UN Cluster Verified", "Sphere Standard Adherent", "Gender & Age Responsive", "Do No Harm Protocol"].map((item) => (
-                  <div key={item} className="flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.1em] text-slate-300">
-                    <CheckCircle2 size={18} className="text-[#1e8b35]" strokeWidth={2} /> {item}
+
+              <h3 className="text-2xl font-semibold mb-8">
+                Compliance Standards
+              </h3>
+
+              <div className="space-y-5">
+
+                {[
+                  "UN Cluster Verified",
+                  "Sphere Standard Aligned",
+                  "Gender & Age Responsive",
+                  "Do No Harm Protocol",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3"
+                  >
+                    <CheckCircle2
+                      size={18}
+                      className="text-[#1e8b35]"
+                    />
+                    {item}
                   </div>
                 ))}
+
               </div>
+
             </div>
-            
-            <button className="w-full flex items-center justify-between p-8 bg-slate-50 border border-slate-200 hover:border-[#1e8b35] hover:bg-white rounded-3xl transition-all group shadow-sm hover:shadow-xl">
-              <div className="flex items-center gap-4">
-                <FileText className="text-[#0b132b] group-hover:text-[#1e8b35] transition-colors" size={24} strokeWidth={1.5} />
-                <span className="font-bold text-[11px] uppercase tracking-[0.2em] text-[#0b132b]">Request Framework PDF</span>
-              </div>
-              <ArrowUpRight className="text-slate-400 group-hover:text-[#1e8b35] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+
+            <button className="
+              w-full
+              flex
+              items-center
+              justify-center
+              gap-4
+              p-6
+              rounded-2xl
+              bg-[#1e8b35]
+              text-white
+              font-semibold
+              hover:bg-[#176d29]
+              transition
+              shadow-lg
+            ">
+              <FileText size={22} />
+              Download Program Brief
             </button>
+
           </div>
 
         </div>
+
       </section>
+
     </main>
   );
 }
