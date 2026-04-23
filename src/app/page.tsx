@@ -46,12 +46,12 @@ const heroSlides = [
 ];
 
 const programs = [
-  { id: "health-nutrition", title: "Health & Nutrition", icon: Heart, desc: "Delivering life-saving nutritional support and accessible medical care to the most remote and vulnerable populations.", img: "/health.jpeg" },
-  { id: "wash-services", title: "WASH Services", icon: Droplets, desc: "Building sustainable boreholes and ensuring clean, safe water dignity for communities in need.", img: "/borehole.jpeg" },
-  { id: "protection-rights", title: "Protection & Rights", icon: ShieldCheck, desc: "Fiercely advocating for human rights, gender equality, and the absolute safety of at-risk groups.", img: "/youthbuildingdyke.jpg" },
-  { id: "education-literacy", title: "Education & Literacy", icon: Users, desc: "Creating inclusive learning environments that bridge the educational gap for both children and adults.", img: "/img (2).jpeg" },
+  { id: "health", title: "Health & Nutrition", icon: Heart, desc: "Delivering life-saving nutritional support and accessible medical care to the most remote and vulnerable populations.", img: "/health.jpeg" },
+  { id: "wash", title: "WASH Services", icon: Droplets, desc: "Building sustainable boreholes and ensuring clean, safe water dignity for communities in need.", img: "/borehole.jpeg" },
+  { id: "protection", title: "Protection & Rights", icon: ShieldCheck, desc: "Fiercely advocating for human rights, gender equality, and the absolute safety of at-risk groups.", img: "/youthbuildingdyke.jpg" },
+  { id: "education", title: "Education & Literacy", icon: Users, desc: "Creating inclusive learning environments that bridge the educational gap for both children and adults.", img: "/img (2).jpeg" },
   { id: "food-security", title: "Food Security", icon: Wheat, desc: "Implementing sustainable agriculture initiatives to foster long-term climate and food resilience.", img: "/Fangak4.jpg" },
-  { id: "shelter-nfis", title: "Shelter & NFIs", icon: Zap, desc: "Executing rapid emergency responses with critical shelter and living supplies during sudden crises.", img: "/floodedvillage.jpeg" },
+  { id: "shelter-nfi", title: "Shelter & NFIs", icon: Zap, desc: "Executing rapid emergency responses with critical shelter and living supplies during sudden crises.", img: "/floodedvillage.jpeg" },
 ];
 
 export default function HomePage() {
@@ -110,10 +110,13 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            <motion.h1 variants={fadeUpVariants} className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]">
-              Alleviating the Suffering of <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1e8b35] to-[#4ade80] italic pr-2">
-                Under-privileged Populations.
+            <motion.h1 
+              variants={fadeUpVariants} 
+              className="max-w-4xl mx-auto text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight leading-[1.05]"
+            >
+              Alleviating Suffering, <br />
+              <span className="bg-gradient-to-r from-[#22c55e] to-[#4ade80] bg-clip-text text-transparent">
+                Empowering Lives.
               </span>
             </motion.h1>
 
@@ -278,9 +281,9 @@ export default function HomePage() {
             {/* Side Stories Stack */}
             <div className="lg:col-span-5 flex flex-col gap-6">
               {[
-                { title: "Health Milestones: Breakthrough in rural nutrition reach for infants and mothers.", img: "/motherwithchild.jpg", date: "April 08, 2026", tag: "Health" },
-                { title: "Clean Water: New solar-powered borehole installed in drought-hit central region.", img: "/borehole.jpeg", date: "March 29, 2026", tag: "WASH" },
-                { title: "Community Building: Youth led dyke construction protects hundreds of homes.", img: "/youthbuildingdyke.jpg", date: "March 15, 2026", tag: "Resilience" }
+                { title: "CCDA promotes safe motherhood and child survival through maternal health education, antenatal and postnatal care support, and child health awareness programs.", img: "/motherwithchild.jpg", date: "April 08, 2026", tag: "Health" },
+                { title: "Access to clean water, safe sanitation, and proper hygiene practices is essential for healthy and resilient communities. ", img: "/borehole.jpeg", date: "March 29, 2026", tag: "WASH" },
+                { title: "CCDA seeks to create protective environments where the rights and well-being of all individuals are respected and upheld", img: "/youthbuildingdyke.jpg", date: "March 15, 2026", tag: "Resilience" }
               ].map((n, i) => (
                 <motion.article 
                   key={i} 

@@ -244,7 +244,7 @@ export default function Navbar() {
                  </a>
               </div>
               <Link
-                href="/donate"
+                href="/contact"
                 className="w-full py-6 bg-emerald-600 text-white rounded-2xl font-black text-center uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl"
               >
                 <Heart size={20} fill="currentColor" /> Donate Now
