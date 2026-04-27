@@ -3,33 +3,27 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
-  Clock, 
-  Loader2, 
-  CheckCircle2, 
-  AlertCircle,
-  ChevronRight
+  Mail, Phone, MapPin, Send, Clock, Loader2, 
+  CheckCircle2, AlertCircle, ChevronRight, Globe,
+  MessageSquare, ShieldCheck
 } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 /* --- ANIMATION VARIANTS --- */
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
-  }
-};
-
-const staggerContainer = {
+const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    transition: { staggerChildren: 0.15, delayChildren: 0.3 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
   }
 };
 
@@ -45,11 +39,15 @@ export default function ContactPage() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
+  // Fallback to ensure the app doesn't crash if env is missing
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!captchaToken) return;
+    if (!captchaToken) {
+      alert("Please complete the security check.");
+      return;
+    }
 
     setStatus("loading");
 
@@ -69,262 +67,259 @@ export default function ContactPage() {
         setStatus("error");
       }
     } catch (error) {
-      console.error("Submission error:", error);
       setStatus("error");
     }
   };
 
-console.log("Site Key Check:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
-
   return (
-    <main className="min-h-screen bg-[#f8fafc] font-sans">
-      {/* --- HERO HEADER --- */}
-      <section className="relative pt-44 pb-32 bg-[#0b132b] text-white px-6 overflow-hidden">
-        {/* Decorative Background Elements */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#1e8b35]/10 rounded-full blur-[140px] -mr-40 -mt-40 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none" />
+    <main className="min-h-screen bg-white selection:bg-[#1e8b35]/30">
+      {/* --- PREMIUM HERO SECTION --- */}
+      <section className="relative pt-40 pb-24 bg-[#0b132b] overflow-hidden">
+        {/* Animated Background Gradients */}
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#1e8b35] opacity-20 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-blue-600 opacity-10 blur-[100px] rounded-full" />
         
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div 
             initial="hidden" 
             animate="visible" 
-            variants={staggerContainer} 
-            className="max-w-3xl"
+            variants={containerVariants} 
+            className="text-center max-w-4xl mx-auto"
           >
-            <motion.div variants={fadeUp} className="flex items-center gap-2 mb-6">
-              <span className="h-px w-8 bg-[#1e8b35]" />
-              <span className="text-[#1e8b35] font-bold uppercase tracking-[0.3em] text-[10px]">Contact Us</span>
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1e8b35] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1e8b35]"></span>
+              </span>
+              <span className="text-white/80 text-[10px] uppercase tracking-[0.4em] font-bold">Get In Touch</span>
             </motion.div>
-            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-serif leading-tight mb-8">
-              Let's Start a <span className="text-[#1e8b35]">Conversation.</span>
+            
+            <motion.h1 variants={itemVariants} className="text-5xl md:text-8xl font-serif text-white mb-8 leading-[1.1]">
+              Connecting for <br />
+              <span className="italic text-[#1e8b35]">South Sudan.</span>
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-slate-400 text-lg md:text-xl font-light leading-relaxed">
-              Whether you're looking to partner, donate, or simply learn more about our work in South Sudan, our team is here to listen.
+            
+            <motion.p variants={itemVariants} className="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+              Have questions about our programs or want to support our mission? Our team is dedicated to providing the transparency and answers you need.
             </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* --- MAIN CONTENT --- */}
-      <section className="py-20 px-6 relative z-20">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 lg:gap-24">
-          
-          {/* Left Side: Contact Information */}
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            variants={staggerContainer} 
-            viewport={{ once: true }} 
-            className="lg:col-span-5 space-y-12"
-          >
-            <div>
-              <h2 className="text-3xl font-serif text-[#0b132b] mb-10 flex items-center gap-4">
-                Reach Information
-                <div className="h-px flex-1 bg-slate-200" />
-              </h2>
+      {/* --- CONTENT GRID --- */}
+      <section className="py-24 px-6 bg-[#fcfcfc]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            
+            {/* LEFT: INFO CARDS */}
+            <div className="lg:col-span-4 space-y-6">
+              <h2 className="text-2xl font-serif text-[#0b132b] mb-8">Contact Details</h2>
               
-              <div className="space-y-10">
-                {[
-                  { 
-                    icon: MapPin, 
-                    title: "Our Headquarters", 
-                    detail: "Juba, Central Equatoria\nSouth Sudan", 
-                    color: "bg-blue-50 text-blue-600" 
-                  },
-                  { 
-                    icon: Phone, 
-                    title: "Call Us Directly", 
-                    detail: "+211 923 846 396", 
-                    color: "bg-green-50 text-[#1e8b35]" 
-                  },
-                  { 
-                    icon: Mail, 
-                    title: "Email Support", 
-                    detail: "info@ccda-ss.org", 
-                    color: "bg-orange-50 text-orange-600" 
-                  }
-                ].map((item, i) => (
-                  <motion.div key={i} variants={fadeUp} className="flex items-start gap-6 group">
-                    <div className={`p-4 rounded-2xl transition-all duration-300 group-hover:scale-110 ${item.color}`}>
-                      <item.icon size={26} strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-[#0b132b] text-lg mb-1">{item.title}</h4>
-                      <p className="text-slate-500 font-light leading-relaxed whitespace-pre-line">{item.detail}</p>
-                    </div>
-                  </motion.div>
-                ))}
+              {[
+                { icon: Phone, label: "Phone", val: "+211 923 846 396", desc: "Mon-Fri, 8am - 5pm", color: "text-blue-600 bg-blue-50" },
+                { icon: Mail, label: "Email", val: "info@ccda-ss.org", desc: "Online support 24/7", color: "text-[#1e8b35] bg-green-50" },
+                { icon: MapPin, label: "Office", val: "Juba, Central Equatoria", desc: "South Sudan HQ", color: "text-orange-600 bg-orange-50" }
+              ].map((item, i) => (
+                <motion.div 
+                  whileHover={{ y: -5 }}
+                  key={i} 
+                  className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm flex gap-5 items-center group"
+                >
+                  <div className={`p-4 rounded-2xl ${item.color} transition-colors`}>
+                    <item.icon size={22} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">{item.label}</p>
+                    <p className="text-[#0b132b] font-bold group-hover:text-[#1e8b35] transition-colors">{item.val}</p>
+                    <p className="text-xs text-slate-400">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+
+              <div className="p-8 bg-[#0b132b] rounded-[2.5rem] text-white mt-10 relative overflow-hidden">
+                <Clock className="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12" />
+                <h4 className="text-lg font-serif mb-4">Availability</h4>
+                <div className="space-y-3 relative z-10">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">Weekdays</span>
+                    <span>08:00 - 17:00</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-400">Saturdays</span>
+                    <span>09:00 - 13:00</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Office Hours Card */}
+            {/* RIGHT: MODERN FORM */}
             <motion.div 
-              variants={fadeUp} 
-              className="p-8 bg-white rounded-3xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)]"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-8"
             >
-              <h3 className="text-xl font-serif text-[#0b132b] mb-6 flex items-center gap-3">
-                <Clock size={20} className="text-[#1e8b35]" /> Office Hours
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { day: "Mon - Fri", time: "8:00 AM - 5:00 PM" },
-                  { day: "Saturday", time: "9:00 AM - 1:00 PM" },
-                  { day: "Sunday", time: "Closed", special: true }
-                ].map((schedule, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-sm border-b border-slate-50 pb-3 last:border-0">
-                    <span className="text-slate-500">{schedule.day}</span>
-                    <span className={`font-semibold ${schedule.special ? 'text-[#1e8b35]' : 'text-slate-700'}`}>
-                      {schedule.time}
-                    </span>
-                  </div>
-                ))}
+              <div className="bg-white rounded-[3rem] p-8 md:p-16 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)] border border-slate-100">
+                <AnimatePresence mode="wait">
+                  {status === "success" ? (
+                    <SuccessState onReset={() => setStatus("idle")} />
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-10">
+  {/* Name & Email Group */}
+  <div className="grid md:grid-cols-2 gap-10">
+    <FloatingInput 
+      label="Full Name" 
+      value={formData.name} 
+      // Explicitly typed 'v' as string to resolve TS7006
+      onChange={(v: string) => setFormData({ ...formData, name: v })} 
+    />
+    <FloatingInput 
+      label="Email Address" 
+      type="email" 
+      value={formData.email} 
+      // Explicitly typed 'v' as string to resolve TS7006
+      onChange={(v: string) => setFormData({ ...formData, email: v })} 
+    />
+  </div>
+
+  {/* Subject Selection */}
+  <div className="space-y-3">
+    <label className="text-[10px] uppercase tracking-widest font-black text-slate-400 ml-1">
+      Topic of Interest
+    </label>
+    <select 
+      value={formData.subject}
+      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
+        setFormData({ ...formData, subject: e.target.value })
+      }
+      className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#1e8b35]/20 transition-all font-medium text-slate-700 appearance-none cursor-pointer"
+    >
+      <option value="general">General Inquiry</option>
+      <option value="partnership">Partnership Proposal</option>
+      <option value="donation">Donation & Support</option>
+      <option value="program">Program Information</option>
+    </select>
+  </div>
+
+  {/* Message Area */}
+  <div className="space-y-3">
+    <label className="text-[10px] uppercase tracking-widest font-black text-slate-400 ml-1">
+      Message
+    </label>
+    <textarea 
+      required
+      rows={4}
+      value={formData.message}
+      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
+        setFormData({ ...formData, message: e.target.value })
+      }
+      placeholder="How can we help you?"
+      className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#1e8b35]/20 transition-all resize-none font-light"
+    />
+  </div>
+
+  {/* Security Verification Box */}
+  <div className="bg-slate-50 p-6 rounded-3xl border border-dashed border-slate-200 flex flex-col items-center">
+    <div className="flex items-center gap-2 mb-4 text-slate-400">
+      <ShieldCheck size={16} />
+      <span className="text-[10px] uppercase font-bold tracking-widest">Security Verification</span>
+    </div>
+    <div className="scale-90 md:scale-100 origin-center">
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={siteKey}
+        onChange={(token: string | null) => setCaptchaToken(token)}
+      />
+    </div>
+  </div>
+
+  {/* Submit Button */}
+  <button 
+    type="submit"
+    disabled={status === "loading" || !captchaToken}
+    className="w-full group relative overflow-hidden bg-[#0b132b] text-white py-6 rounded-2xl font-bold uppercase tracking-[0.2em] text-xs transition-all hover:bg-[#1e8b35] disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-slate-200"
+  >
+    <span className="relative z-10 flex items-center justify-center gap-3">
+      {status === "loading" ? (
+        <>
+          <Loader2 className="animate-spin" size={18} />
+          Processing...
+        </>
+      ) : (
+        <>
+          Dispatch Message
+          <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+        </>
+      )}
+    </span>
+  </button>
+
+  {/* Enhanced Error Feedback */}
+  <AnimatePresence>
+    {status === "error" && (
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        className="p-4 bg-red-50 rounded-2xl border border-red-100 flex items-center justify-center gap-3 text-red-600 text-sm font-medium"
+      >
+        <AlertCircle size={18} /> 
+        <span>Transmission failed. Please verify your connection and try again.</span>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</form>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
-          </motion.div>
-
-          {/* Right Side: Interactive Form */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }} 
-            whileInView={{ opacity: 1, x: 0 }} 
-            viewport={{ once: true }} 
-            className="lg:col-span-7"
-          >
-            <div className="bg-white p-8 md:p-14 rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.05)] border border-slate-50 relative">
-              <AnimatePresence mode="wait">
-                {status === "success" ? (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }} 
-                    animate={{ opacity: 1, scale: 1 }} 
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="text-center py-16 space-y-6"
-                  >
-                    <div className="relative mx-auto w-24 h-24">
-                       <div className="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-20" />
-                       <div className="relative bg-green-500 text-white w-24 h-24 rounded-full flex items-center justify-center shadow-lg shadow-green-200">
-                        <CheckCircle2 size={48} />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-3xl font-serif text-[#0b132b]">Message Sent Successfully</h3>
-                      <p className="text-slate-500 max-w-xs mx-auto">Thank you for reaching out. A team member will follow up with you shortly.</p>
-                    </div>
-                    <button 
-                      onClick={() => setStatus("idle")} 
-                      className="inline-flex items-center gap-2 text-[#1e8b35] font-bold hover:gap-3 transition-all mt-4"
-                    >
-                      Send another message <ChevronRight size={18} />
-                    </button>
-                  </motion.div>
-                ) : (
-                  <form className="space-y-8" onSubmit={handleSubmit}>
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div className="space-y-3">
-                        <label className="text-xs font-bold text-[#0b132b] uppercase tracking-wider ml-1">Full Name</label>
-                        <input 
-                          required 
-                          type="text" 
-                          value={formData.name} 
-                          onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                          className="w-full px-6 py-4 bg-slate-50 rounded-2xl border border-transparent focus:border-[#1e8b35] focus:bg-white focus:ring-4 focus:ring-green-50 outline-none transition-all duration-300 font-light" 
-                          placeholder="Your Name" 
-                        />
-                      </div>
-                      <div className="space-y-3">
-                        <label className="text-xs font-bold text-[#0b132b] uppercase tracking-wider ml-1">Email Address</label>
-                        <input 
-                          required 
-                          type="email" 
-                          value={formData.email} 
-                          onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                          className="w-full px-6 py-4 bg-slate-50 rounded-2xl border border-transparent focus:border-[#1e8b35] focus:bg-white focus:ring-4 focus:ring-green-50 outline-none transition-all duration-300 font-light" 
-                          placeholder="hello@company.com" 
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="text-xs font-bold text-[#0b132b] uppercase tracking-wider ml-1">Subject of Inquiry</label>
-                      <div className="relative">
-                        <select 
-                          value={formData.subject} 
-                          onChange={(e) => setFormData({...formData, subject: e.target.value})} 
-                          className="w-full px-6 py-4 bg-slate-50 rounded-2xl border border-transparent focus:border-[#1e8b35] focus:bg-white outline-none transition-all duration-300 font-light appearance-none"
-                        >
-                          <option value="general">General Inquiry</option>
-                          <option value="partnership">Partnership Proposal</option>
-                          <option value="donation">Donation & Support</option>
-                          <option value="program">Program Information</option>
-                        </select>
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                          <ChevronRight size={18} className="rotate-90" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="text-xs font-bold text-[#0b132b] uppercase tracking-wider ml-1">Your Message</label>
-                      <textarea 
-                        required 
-                        rows={5} 
-                        value={formData.message} 
-                        onChange={(e) => setFormData({...formData, message: e.target.value})} 
-                        className="w-full px-6 py-4 bg-slate-50 rounded-2xl border border-transparent focus:border-[#1e8b35] focus:bg-white focus:ring-4 focus:ring-green-50 outline-none transition-all duration-300 font-light resize-none" 
-                        placeholder="Tell us how we can help..." 
-                      />
-                    </div>
-
-                    {/* Security Verification */}
-                    <div className="flex flex-col items-center justify-center p-6 bg-slate-50 border border-dashed border-slate-200 rounded-3xl overflow-hidden">
-                      {siteKey ? (
-                        <div className="scale-90 md:scale-100">
-                          <ReCAPTCHA
-                            ref={recaptchaRef}
-                            sitekey={siteKey}
-                            onChange={(token) => setCaptchaToken(token)}
-                          />
-                        </div>
-                      ) : (
-                        <div className="text-red-500 text-[10px] flex items-center gap-2 uppercase tracking-tighter">
-                          <AlertCircle size={14} /> Configuration Error: Missing ReCAPTCHA Site Key
-                        </div>
-                      )}
-                    </div>
-
-                    <button 
-                      type="submit"
-                      disabled={status === "loading" || !captchaToken}
-                      className="w-full py-5 rounded-2xl flex items-center justify-center gap-3 transition-all duration-500 group relative overflow-hidden disabled:cursor-not-allowed"
-                    >
-                      <div className={`absolute inset-0 transition-all duration-500 ${!captchaToken ? 'bg-slate-200' : 'bg-[#0b132b] group-hover:bg-[#1e8b35]'}`} />
-                      
-                      <span className={`relative z-10 font-bold uppercase tracking-[0.2em] text-xs ${!captchaToken ? 'text-slate-400' : 'text-white'}`}>
-                        {status === "loading" ? "Processing..." : "Send Inquiry"}
-                      </span>
-                      
-                      {status === "loading" ? (
-                        <Loader2 className="animate-spin relative z-10 text-white" size={18} />
-                      ) : (
-                        <Send size={16} className={`relative z-10 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 ${!captchaToken ? 'text-slate-400' : 'text-white'}`} />
-                      )}
-                    </button>
-                    
-                    {status === "error" && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: 10 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        className="flex items-center justify-center gap-2 text-red-500 text-sm font-medium"
-                      >
-                        <AlertCircle size={16} /> 
-                        Transmission failed. Please try again or email us directly.
-                      </motion.div>
-                    )}
-                  </form>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </main>
+  );
+}
+
+/* --- UI COMPONENTS --- */
+
+function FloatingInput({ label, value, onChange, type = "text" }: any) {
+  return (
+    <div className="relative group">
+      <input 
+        required
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder=" "
+        className="peer w-full bg-transparent border-b-2 border-slate-200 py-3 outline-none focus:border-[#1e8b35] transition-all font-medium text-[#0b132b]"
+      />
+      <label className="absolute left-0 top-3 text-slate-400 pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:uppercase peer-focus:font-bold peer-focus:text-[#1e8b35] peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-[10px]">
+        {label}
+      </label>
+    </div>
+  );
+}
+
+function SuccessState({ onReset }: { onReset: () => void }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="text-center py-10"
+    >
+      <div className="w-24 h-24 bg-green-50 text-[#1e8b35] rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+        <CheckCircle2 size={40} />
+      </div>
+      <h3 className="text-3xl font-serif text-[#0b132b] mb-4">Message Received</h3>
+      <p className="text-slate-500 max-w-sm mx-auto mb-10">
+        Your inquiry has been routed to the correct department. We usually respond within 24 business hours.
+      </p>
+      <button 
+        onClick={onReset}
+        className="text-[#1e8b35] font-bold uppercase tracking-widest text-[10px] border-b-2 border-[#1e8b35] pb-1 hover:text-[#0b132b] hover:border-[#0b132b] transition-all"
+      >
+        Send another inquiry
+      </button>
+    </motion.div>
   );
 }
