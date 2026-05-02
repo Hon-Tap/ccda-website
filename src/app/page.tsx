@@ -128,7 +128,7 @@ export default function HomePage() {
               <Link href="/programs" className="group px-8 py-4 bg-[#1e8b35] text-white font-bold rounded-full hover:bg-[#156e29] hover:shadow-lg hover:shadow-[#1e8b35]/30 transition-all duration-300 flex items-center justify-center gap-3">
                 Explore Programs <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/donate" className="group px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-bold rounded-full hover:bg-white hover:text-[#0b132b] transition-all duration-300 flex items-center justify-center gap-3">
+              <Link href="/contact" className="group px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white font-bold rounded-full hover:bg-white hover:text-[#0b132b] transition-all duration-300 flex items-center justify-center gap-3">
                 Support the Mission <Heart size={18} className="group-hover:scale-110 transition-transform" />
               </Link>
             </motion.div>
